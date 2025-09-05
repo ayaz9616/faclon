@@ -1,0 +1,350 @@
+{
+  "simulation_parameters": {
+    "time_scale_factor": 360,
+    "start_time": "08:00:00"
+  },
+  "train_roster": [
+    {
+      "train_no": "12306",
+      "name": "HWH Rajdhani",
+      "priority": 18,
+      "max_speed_kph": 130,
+      "color": "#c0392b",
+      "mission_plan": [
+        {
+          "node_id": "PNBE_PF1",
+          "scheduled_arrival_time": "08:00:00",
+          "scheduled_departure_time": "08:10:00"
+        },
+        {
+          "node_id": "DGR_PF4",
+          "scheduled_arrival_time": "10:00:00",
+          "scheduled_departure_time": "10:02:00"
+        },
+        {
+          "node_id": "HWH_PF1",
+          "scheduled_arrival_time": "11:30:00",
+          "scheduled_departure_time": "99:99:99"
+        }
+      ],
+      "route_path": [
+        "PNBE_GW_E",
+        "PNBE_PF1",
+        "PNBE_GW_W",
+        "JCT_A_UP",
+        "BGP_GW_E",
+        "BGP_GW_W",
+        "DGR_GW_E",
+        "DGR_PF4",
+        "DGR_GW_W",
+        "JCT_B_UP",
+        "STX_GW_E",
+        "STX_GW_W",
+        "HWH_GW_E",
+        "HWH_PF1"
+      ]
+    },
+    {
+      "train_no": "13006",
+      "name": "Amritsar Mail",
+      "priority": 9,
+      "max_speed_kph": 110,
+      "color": "#27ae60",
+      "mission_plan": [
+        {
+          "node_id": "PNBE_PF3",
+          "scheduled_arrival_time": "08:05:00",
+          "scheduled_departure_time": "08:20:00"
+        },
+        {
+          "node_id": "BGP_PF3",
+          "scheduled_arrival_time": "09:50:00",
+          "scheduled_departure_time": "09:55:00"
+        },
+        {
+          "node_id": "STX_PF2",
+          "scheduled_arrival_time": "11:50:00",
+          "scheduled_departure_time": "11:55:00"
+        },
+        {
+          "node_id": "HWH_PF2",
+          "scheduled_arrival_time": "12:50:00",
+          "scheduled_departure_time": "99:99:99"
+        }
+      ],
+      "route_path": [
+        "PNBE_GW_E",
+        "PNBE_PF3",
+        "PNBE_GW_W",
+        "JCT_A_MID",
+        "BGP_GW_E",
+        "BGP_PF3",
+        "BGP_GW_W",
+        "DGR_GW_E",
+        "DGR_GW_W",
+        "JCT_B_MID",
+        "STX_GW_E",
+        "STX_PF2",
+        "STX_GW_W",
+        "HWH_GW_E",
+        "HWH_PF2"
+      ]
+    },
+    {
+      "train_no": "12024",
+      "name": "Patna Howrah Jan Shatabdi",
+      "priority": 15,
+      "max_speed_kph": 120,
+      "color": "#3498db",
+      "mission_plan": [
+        {
+          "node_id": "PNBE_PF2",
+          "scheduled_arrival_time": "08:15:00",
+          "scheduled_departure_time": "08:25:00"
+        },
+        {
+          "node_id": "DGR_PF3",
+          "scheduled_arrival_time": "10:10:00",
+          "scheduled_departure_time": "10:12:00"
+        },
+        {
+          "node_id": "HWH_PF3",
+          "scheduled_arrival_time": "11:45:00",
+          "scheduled_departure_time": "99:99:99"
+        }
+      ],
+      "route_path": [
+        "PNBE_GW_E",
+        "PNBE_PF2",
+        "PNBE_GW_W",
+        "JCT_A_DN",
+        "BGP_GW_E",
+        "BGP_GW_W",
+        "DGR_GW_E",
+        "DGR_PF3",
+        "DGR_GW_W",
+        "JCT_B_DN",
+        "STX_GW_E",
+        "STX_GW_W",
+        "HWH_GW_E",
+        "HWH_PF3"
+      ]
+    },
+    {
+      "train_no": "12328",
+      "name": "Upasana Express",
+      "priority": 12,
+      "max_speed_kph": 110,
+      "color": "#8e44ad",
+      "mission_plan": [
+        {
+          "node_id": "PNBE_PF4",
+          "scheduled_arrival_time": "08:30:00",
+          "scheduled_departure_time": "08:40:00"
+        },
+        {
+          "node_id": "BGP_PF1",
+          "scheduled_arrival_time": "10:10:00",
+          "scheduled_departure_time": "10:15:00"
+        },
+        {
+          "node_id": "DGR_PF2",
+          "scheduled_arrival_time": "11:45:00",
+          "scheduled_departure_time": "11:47:00"
+        },
+        {
+          "node_id": "HWH_PF4",
+          "scheduled_arrival_time": "13:00:00",
+          "scheduled_departure_time": "99:99:99"
+        }
+      ],
+      "route_path": [
+        "PNBE_GW_E",
+        "PNBE_PF4",
+        "PNBE_GW_W",
+        "JCT_A_MID",
+        "BGP_GW_E",
+        "BGP_PF1",
+        "BGP_GW_W",
+        "DGR_GW_E",
+        "DGR_PF2",
+        "DGR_GW_W",
+        "JCT_B_MID",
+        "JCT_B_UP",
+        "STX_GW_E",
+        "STX_GW_W",
+        "HWH_GW_E",
+        "HWH_PF4"
+      ]
+    },
+    {
+      "train_no": "18184",
+      "name": "Danapur Tatanagar Express",
+      "priority": 10,
+      "max_speed_kph": 100,
+      "color": "#e67e22",
+      "mission_plan": [
+        {
+          "node_id": "PNBE_PF1",
+          "scheduled_arrival_time": "08:45:00",
+          "scheduled_departure_time": "08:55:00"
+        },
+        {
+          "node_id": "BGP_PF4",
+          "scheduled_arrival_time": "10:30:00",
+          "scheduled_departure_time": "10:35:00"
+        },
+        {
+          "node_id": "STX_PF3",
+          "scheduled_arrival_time": "12:20:00",
+          "scheduled_departure_time": "12:25:00"
+        },
+        {
+          "node_id": "HWH_PF1",
+          "scheduled_arrival_time": "13:30:00",
+          "scheduled_departure_time": "99:99:99"
+        }
+      ],
+      "route_path": [
+        "PNBE_GW_E",
+        "PNBE_PF1",
+        "PNBE_GW_W",
+        "JCT_A_UP",
+        "BGP_GW_E",
+        "BGP_PF4",
+        "BGP_GW_W",
+        "DGR_GW_E",
+        "DGR_GW_W",
+        "JCT_B_UP",
+        "STX_GW_E",
+        "STX_PF3",
+        "STX_GW_W",
+        "HWH_GW_E",
+        "HWH_PF1"
+      ]
+    },
+    {
+      "train_no": "50001",
+      "name": "Coal Freight",
+      "priority": 3,
+      "max_speed_kph": 60,
+      "color": "#7f8c8d",
+      "mission_plan": [
+        {
+          "node_id": "PNBE_PF4",
+          "scheduled_arrival_time": "08:00:00",
+          "scheduled_departure_time": "08:10:00"
+        },
+        {
+          "node_id": "DGR_PF1",
+          "scheduled_arrival_time": "12:00:00",
+          "scheduled_departure_time": "12:30:00"
+        },
+        {
+          "node_id": "HWH_PF4",
+          "scheduled_arrival_time": "16:00:00",
+          "scheduled_departure_time": "99:99:99"
+        }
+      ],
+      "route_path": [
+        "PNBE_GW_E",
+        "PNBE_PF4",
+        "PNBE_GW_W",
+        "JCT_A_DN",
+        "BGP_GW_E",
+        "BGP_GW_W",
+        "DGR_GW_E",
+        "DGR_PF1",
+        "DGR_GW_W",
+        "JCT_B_DN",
+        "STX_GW_E",
+        "STX_GW_W",
+        "HWH_GW_E",
+        "HWH_PF4"
+      ]
+    },
+    {
+      "train_no": "13050",
+      "name": "Howrah Express",
+      "priority": 8,
+      "max_speed_kph": 100,
+      "color": "#16a085",
+      "mission_plan": [
+        {
+          "node_id": "PNBE_PF2",
+          "scheduled_arrival_time": "09:00:00",
+          "scheduled_departure_time": "09:15:00"
+        },
+        {
+          "node_id": "BGP_PF3",
+          "scheduled_arrival_time": "10:45:00",
+          "scheduled_departure_time": "10:50:00"
+        },
+        {
+          "node_id": "STX_PF4",
+          "scheduled_arrival_time": "12:30:00",
+          "scheduled_departure_time": "12:35:00"
+        },
+        {
+          "node_id": "HWH_PF2",
+          "scheduled_arrival_time": "13:45:00",
+          "scheduled_departure_time": "99:99:99"
+        }
+      ],
+      "route_path": [
+        "PNBE_GW_E",
+        "PNBE_PF2",
+        "PNBE_GW_W",
+        "JCT_A_MID",
+        "BGP_GW_E",
+        "BGP_PF3",
+        "BGP_GW_W",
+        "DGR_GW_E",
+        "DGR_GW_W",
+        "JCT_B_MID",
+        "STX_GW_E",
+        "STX_PF4",
+        "STX_GW_W",
+        "HWH_GW_E",
+        "HWH_PF2"
+      ]
+    },
+    {
+      "train_no": "50002",
+      "name": "Goods Freight",
+      "priority": 2,
+      "max_speed_kph": 50,
+      "color": "#a52a2a",
+      "mission_plan": [
+        {
+          "node_id": "BGP_PF4",
+          "scheduled_arrival_time": "09:00:00",
+          "scheduled_departure_time": "09:10:00"
+        },
+        {
+          "node_id": "DGR_PF1",
+          "scheduled_arrival_time": "12:00:00",
+          "scheduled_departure_time": "12:30:00"
+        },
+        {
+          "node_id": "HWH_PF3",
+          "scheduled_arrival_time": "17:00:00",
+          "scheduled_departure_time": "99:99:99"
+        }
+      ],
+      "route_path": [
+        "BGP_GW_E",
+        "BGP_PF4",
+        "BGP_GW_W",
+        "DGR_GW_E",
+        "DGR_PF1",
+        "DGR_GW_W",
+        "JCT_B_UP",
+        "STX_GW_E",
+        "STX_GW_W",
+        "HWH_GW_E",
+        "HWH_PF3"
+      ]
+    }
+  ]
+}

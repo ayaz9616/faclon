@@ -1,0 +1,963 @@
+{
+  "section_details": {
+    "name": "Patna - Howrah Demo Section",
+    "grid_dimensions": {
+      "width": 1200,
+      "height": 1000
+    }
+  },
+  "nodes": [
+    {
+      "id": "PNBE_GW_E",
+      "type": "STATION_GATEWAY",
+      "name": "Patna Jn East Gateway",
+      "position": {
+        "x": 100,
+        "y": 500
+      },
+      "station_id": "PNBE",
+      "station_name": "Patna Junction"
+    },
+    {
+      "id": "PNBE_PF1",
+      "type": "STATION_PLATFORM",
+      "name": "Patna PF 1",
+      "position": {
+        "x": 150,
+        "y": 450
+      },
+      "station_id": "PNBE",
+      "station_name": "Patna Junction"
+    },
+    {
+      "id": "PNBE_PF2",
+      "type": "STATION_PLATFORM",
+      "name": "Patna PF 2",
+      "position": {
+        "x": 150,
+        "y": 475
+      },
+      "station_id": "PNBE",
+      "station_name": "Patna Junction"
+    },
+    {
+      "id": "PNBE_PF3",
+      "type": "STATION_PLATFORM",
+      "name": "Patna PF 3",
+      "position": {
+        "x": 150,
+        "y": 500
+      },
+      "station_id": "PNBE",
+      "station_name": "Patna Junction"
+    },
+    {
+      "id": "PNBE_PF4",
+      "type": "STATION_PLATFORM",
+      "name": "Patna PF 4",
+      "position": {
+        "x": 150,
+        "y": 525
+      },
+      "station_id": "PNBE",
+      "station_name": "Patna Junction"
+    },
+    {
+      "id": "PNBE_GW_W",
+      "type": "STATION_GATEWAY",
+      "name": "Patna Jn West Gateway",
+      "position": {
+        "x": 200,
+        "y": 500
+      },
+      "station_id": "PNBE",
+      "station_name": "Patna Junction"
+    },
+    {
+      "id": "JCT_A_UP",
+      "type": "JUNCTION",
+      "name": "Crossover A (UP)",
+      "position": {
+        "x": 250,
+        "y": 480
+      },
+      "station_name": "Crossover A"
+    },
+    {
+      "id": "JCT_A_MID",
+      "type": "JUNCTION",
+      "name": "Crossover A (MID)",
+      "position": {
+        "x": 250,
+        "y": 500
+      },
+      "station_name": "Crossover A"
+    },
+    {
+      "id": "JCT_A_DN",
+      "type": "JUNCTION",
+      "name": "Crossover A (DN)",
+      "position": {
+        "x": 250,
+        "y": 520
+      },
+      "station_name": "Crossover A"
+    },
+    {
+      "id": "BGP_GW_E",
+      "type": "STATION_GATEWAY",
+      "name": "Bhagalpur Jn East Gateway",
+      "position": {
+        "x": 300,
+        "y": 500
+      },
+      "station_id": "BGP",
+      "station_name": "Bhagalpur Junction"
+    },
+    {
+      "id": "BGP_PF1",
+      "type": "STATION_PLATFORM",
+      "name": "Bhagalpur PF 1",
+      "position": {
+        "x": 350,
+        "y": 450
+      },
+      "station_id": "BGP",
+      "station_name": "Bhagalpur Junction"
+    },
+    {
+      "id": "BGP_PF2",
+      "type": "STATION_PLATFORM",
+      "name": "Bhagalpur PF 2",
+      "position": {
+        "x": 350,
+        "y": 475
+      },
+      "station_id": "BGP",
+      "station_name": "Bhagalpur Junction"
+    },
+    {
+      "id": "BGP_PF3",
+      "type": "STATION_PLATFORM",
+      "name": "Bhagalpur PF 3",
+      "position": {
+        "x": 350,
+        "y": 500
+      },
+      "station_id": "BGP",
+      "station_name": "Bhagalpur Junction"
+    },
+    {
+      "id": "BGP_PF4",
+      "type": "STATION_PLATFORM",
+      "name": "Bhagalpur PF 4",
+      "position": {
+        "x": 350,
+        "y": 525
+      },
+      "station_id": "BGP",
+      "station_name": "Bhagalpur Junction"
+    },
+    {
+      "id": "BGP_GW_W",
+      "type": "STATION_GATEWAY",
+      "name": "Bhagalpur Jn West Gateway",
+      "position": {
+        "x": 400,
+        "y": 500
+      },
+      "station_id": "BGP",
+      "station_name": "Bhagalpur Junction"
+    },
+    {
+      "id": "DGR_GW_E",
+      "type": "STATION_GATEWAY",
+      "name": "Durgapur East Gateway",
+      "position": {
+        "x": 500,
+        "y": 400
+      },
+      "station_id": "DGR",
+      "station_name": "Durgapur"
+    },
+    {
+      "id": "DGR_PF1",
+      "type": "STATION_PLATFORM",
+      "name": "Durgapur PF 1",
+      "position": {
+        "x": 550,
+        "y": 350
+      },
+      "station_id": "DGR",
+      "station_name": "Durgapur"
+    },
+    {
+      "id": "DGR_PF2",
+      "type": "STATION_PLATFORM",
+      "name": "Durgapur PF 2",
+      "position": {
+        "x": 550,
+        "y": 375
+      },
+      "station_id": "DGR",
+      "station_name": "Durgapur"
+    },
+    {
+      "id": "DGR_PF3",
+      "type": "STATION_PLATFORM",
+      "name": "Durgapur PF 3",
+      "position": {
+        "x": 550,
+        "y": 400
+      },
+      "station_id": "DGR",
+      "station_name": "Durgapur"
+    },
+    {
+      "id": "DGR_PF4",
+      "type": "STATION_PLATFORM",
+      "name": "Durgapur PF 4",
+      "position": {
+        "x": 550,
+        "y": 425
+      },
+      "station_id": "DGR",
+      "station_name": "Durgapur"
+    },
+    {
+      "id": "DGR_GW_W",
+      "type": "STATION_GATEWAY",
+      "name": "Durgapur West Gateway",
+      "position": {
+        "x": 600,
+        "y": 400
+      },
+      "station_id": "DGR",
+      "station_name": "Durgapur"
+    },
+    {
+      "id": "JCT_B_UP",
+      "type": "JUNCTION",
+      "name": "Crossover B (UP)",
+      "position": {
+        "x": 650,
+        "y": 380
+      },
+      "station_name": "Crossover B"
+    },
+    {
+      "id": "JCT_B_MID",
+      "type": "JUNCTION",
+      "name": "Crossover B (MID)",
+      "position": {
+        "x": 650,
+        "y": 400
+      },
+      "station_name": "Crossover B"
+    },
+    {
+      "id": "JCT_B_DN",
+      "type": "JUNCTION",
+      "name": "Crossover B (DN)",
+      "position": {
+        "x": 650,
+        "y": 420
+      },
+      "station_name": "Crossover B"
+    },
+    {
+      "id": "STX_GW_E",
+      "type": "STATION_GATEWAY",
+      "name": "Station X East Gateway",
+      "position": {
+        "x": 700,
+        "y": 300
+      },
+      "station_id": "STX",
+      "station_name": "Station X"
+    },
+    {
+      "id": "STX_PF1",
+      "type": "STATION_PLATFORM",
+      "name": "Station X PF 1",
+      "position": {
+        "x": 750,
+        "y": 250
+      },
+      "station_id": "STX",
+      "station_name": "Station X"
+    },
+    {
+      "id": "STX_PF2",
+      "type": "STATION_PLATFORM",
+      "name": "Station X PF 2",
+      "position": {
+        "x": 750,
+        "y": 275
+      },
+      "station_id": "STX",
+      "station_name": "Station X"
+    },
+    {
+      "id": "STX_PF3",
+      "type": "STATION_PLATFORM",
+      "name": "Station X PF 3",
+      "position": {
+        "x": 750,
+        "y": 300
+      },
+      "station_id": "STX",
+      "station_name": "Station X"
+    },
+    {
+      "id": "STX_PF4",
+      "type": "STATION_PLATFORM",
+      "name": "Station X PF 4",
+      "position": {
+        "x": 750,
+        "y": 325
+      },
+      "station_id": "STX",
+      "station_name": "Station X"
+    },
+    {
+      "id": "STX_GW_W",
+      "type": "STATION_GATEWAY",
+      "name": "Station X West Gateway",
+      "position": {
+        "x": 800,
+        "y": 300
+      },
+      "station_id": "STX",
+      "station_name": "Station X"
+    },
+    {
+      "id": "HWH_GW_E",
+      "type": "STATION_GATEWAY",
+      "name": "Howrah Jn East Gateway",
+      "position": {
+        "x": 900,
+        "y": 400
+      },
+      "station_id": "HWH",
+      "station_name": "Howrah Junction"
+    },
+    {
+      "id": "HWH_PF1",
+      "type": "STATION_PLATFORM",
+      "name": "Howrah PF 1",
+      "position": {
+        "x": 950,
+        "y": 350
+      },
+      "station_id": "HWH",
+      "station_name": "Howrah Junction"
+    },
+    {
+      "id": "HWH_PF2",
+      "type": "STATION_PLATFORM",
+      "name": "Howrah PF 2",
+      "position": {
+        "x": 950,
+        "y": 375
+      },
+      "station_id": "HWH",
+      "station_name": "Howrah Junction"
+    },
+    {
+      "id": "HWH_PF3",
+      "type": "STATION_PLATFORM",
+      "name": "Howrah PF 3",
+      "position": {
+        "x": 950,
+        "y": 400
+      },
+      "station_id": "HWH",
+      "station_name": "Howrah Junction"
+    },
+    {
+      "id": "HWH_PF4",
+      "type": "STATION_PLATFORM",
+      "name": "Howrah PF 4",
+      "position": {
+        "x": 950,
+        "y": 425
+      },
+      "station_id": "HWH",
+      "station_name": "Howrah Junction"
+    },
+    {
+      "id": "HWH_GW_W",
+      "type": "STATION_GATEWAY",
+      "name": "Howrah Jn West Gateway",
+      "position": {
+        "x": 1000,
+        "y": 400
+      },
+      "station_id": "HWH",
+      "station_name": "Howrah Junction"
+    },
+
+
+
+
+    {
+      "id": "PAT_PF1",
+      "type": "Platform",
+      "name": "Patna Junction PF 1",
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "station_id": "PAT",
+      "station_name": "Patna Junction"
+    },
+    {
+      "id": "PAT_PF2",
+      "type": "Platform",
+      "name": "Patna Junction PF 2",
+      "position": {
+        "x": 100,
+        "y": 150
+      },
+      "station_id": "PAT",
+      "station_name": "Patna Junction"
+    },
+    {
+      "id": "PAT_PF3",
+      "type": "Platform",
+      "name": "Patna Junction PF 3",
+      "position": {
+        "x": 100,
+        "y": 200
+      },
+      "station_id": "PAT",
+      "station_name": "Patna Junction"
+    },
+    {
+      "id": "PAT_PF4",
+      "type": "Platform",
+      "name": "Patna Junction PF 4",
+      "position": {
+        "x": 100,
+        "y": 250
+      },
+      "station_id": "PAT",
+      "station_name": "Patna Junction"
+    },
+    {
+      "id": "PAT_GW_W",
+      "type": "STATION_GATEWAY",
+      "name": "Patna Jn West Gateway",
+      "position": {
+        "x": 1000,
+        "y": 400
+      },
+      "station_id": "HWH",
+      "station_name": "Howrah Junction"
+    }
+
+
+    
+
+  ],
+  "edges": [
+    {
+      "id": "E01",
+      "name": "PNBE Entry -> PF1",
+      "start_node_id": "PNBE_GW_E",
+      "end_node_id": "PNBE_PF1",
+      "length_km": 0.5
+    },
+    {
+      "id": "E02",
+      "name": "PNBE Entry -> PF2",
+      "start_node_id": "PNBE_GW_E",
+      "end_node_id": "PNBE_PF2",
+      "length_km": 0.5
+    },
+    {
+      "id": "E03",
+      "name": "PNBE Entry -> PF3",
+      "start_node_id": "PNBE_GW_E",
+      "end_node_id": "PNBE_PF3",
+      "length_km": 0.5
+    },
+    {
+      "id": "E04",
+      "name": "PNBE Entry -> PF4",
+      "start_node_id": "PNBE_GW_E",
+      "end_node_id": "PNBE_PF4",
+      "length_km": 0.5
+    },
+    {
+      "id": "E05",
+      "name": "PNBE PF1 -> Exit",
+      "start_node_id": "PNBE_PF1",
+      "end_node_id": "PNBE_GW_W",
+      "length_km": 0.5
+    },
+    {
+      "id": "E06",
+      "name": "PNBE PF2 -> Exit",
+      "start_node_id": "PNBE_PF2",
+      "end_node_id": "PNBE_GW_W",
+      "length_km": 0.5
+    },
+    {
+      "id": "E07",
+      "name": "PNBE PF3 -> Exit",
+      "start_node_id": "PNBE_PF3",
+      "end_node_id": "PNBE_GW_W",
+      "length_km": 0.5
+    },
+    {
+      "id": "E08",
+      "name": "PNBE PF4 -> Exit",
+      "start_node_id": "PNBE_PF4",
+      "end_node_id": "PNBE_GW_W",
+      "length_km": 0.5
+    },
+    {
+      "id": "E08T",
+      "name": "PNBE Through Track",
+      "start_node_id": "PNBE_GW_E",
+      "end_node_id": "PNBE_GW_W",
+      "length_km": 1
+    },
+    {
+      "id": "E09",
+      "name": "PNBE-JCT_A ML1",
+      "start_node_id": "PNBE_GW_W",
+      "end_node_id": "JCT_A_UP",
+      "length_km": 20
+    },
+    {
+      "id": "E10",
+      "name": "PNBE-JCT_A ML2",
+      "start_node_id": "PNBE_GW_W",
+      "end_node_id": "JCT_A_MID",
+      "length_km": 20
+    },
+    {
+      "id": "E11",
+      "name": "PNBE-JCT_A ML3",
+      "start_node_id": "PNBE_GW_W",
+      "end_node_id": "JCT_A_DN",
+      "length_km": 20
+    },
+    {
+      "id": "E12",
+      "name": "Crossover A UP-MID",
+      "start_node_id": "JCT_A_UP",
+      "end_node_id": "JCT_A_MID",
+      "length_km": 0.2
+    },
+    {
+      "id": "E13",
+      "name": "Crossover A MID-UP",
+      "start_node_id": "JCT_A_MID",
+      "end_node_id": "JCT_A_UP",
+      "length_km": 0.2
+    },
+    {
+      "id": "E14",
+      "name": "Crossover A MID-DN",
+      "start_node_id": "JCT_A_MID",
+      "end_node_id": "JCT_A_DN",
+      "length_km": 0.2
+    },
+    {
+      "id": "E15",
+      "name": "Crossover A DN-MID",
+      "start_node_id": "JCT_A_DN",
+      "end_node_id": "JCT_A_MID",
+      "length_km": 0.2
+    },
+    {
+      "id": "E16",
+      "name": "JCT_A-BGP ML1",
+      "start_node_id": "JCT_A_UP",
+      "end_node_id": "BGP_GW_E",
+      "length_km": 180
+    },
+    {
+      "id": "E17",
+      "name": "JCT_A-BGP ML2",
+      "start_node_id": "JCT_A_MID",
+      "end_node_id": "BGP_GW_E",
+      "length_km": 180
+    },
+    {
+      "id": "E18",
+      "name": "JCT_A-BGP ML3",
+      "start_node_id": "JCT_A_DN",
+      "end_node_id": "BGP_GW_E",
+      "length_km": 180
+    },
+    {
+      "id": "E19",
+      "name": "BGP Entry -> PF1",
+      "start_node_id": "BGP_GW_E",
+      "end_node_id": "BGP_PF1",
+      "length_km": 0.5
+    },
+    {
+      "id": "E20",
+      "name": "BGP Entry -> PF2",
+      "start_node_id": "BGP_GW_E",
+      "end_node_id": "BGP_PF2",
+      "length_km": 0.5
+    },
+    {
+      "id": "E21",
+      "name": "BGP Entry -> PF3",
+      "start_node_id": "BGP_GW_E",
+      "end_node_id": "BGP_PF3",
+      "length_km": 0.5
+    },
+    {
+      "id": "E22",
+      "name": "BGP Entry -> PF4",
+      "start_node_id": "BGP_GW_E",
+      "end_node_id": "BGP_PF4",
+      "length_km": 0.5
+    },
+    {
+      "id": "E23",
+      "name": "BGP PF1 -> Exit",
+      "start_node_id": "BGP_PF1",
+      "end_node_id": "BGP_GW_W",
+      "length_km": 0.5
+    },
+    {
+      "id": "E24",
+      "name": "BGP PF2 -> Exit",
+      "start_node_id": "BGP_PF2",
+      "end_node_id": "BGP_GW_W",
+      "length_km": 0.5
+    },
+    {
+      "id": "E25",
+      "name": "BGP PF3 -> Exit",
+      "start_node_id": "BGP_PF3",
+      "end_node_id": "BGP_GW_W",
+      "length_km": 0.5
+    },
+    {
+      "id": "E26",
+      "name": "BGP PF4 -> Exit",
+      "start_node_id": "BGP_PF4",
+      "end_node_id": "BGP_GW_W",
+      "length_km": 0.5
+    },
+    {
+      "id": "E27",
+      "name": "BGP Through Track",
+      "start_node_id": "BGP_GW_E",
+      "end_node_id": "BGP_GW_W",
+      "length_km": 1
+    },
+    {
+      "id": "E28",
+      "name": "BGP-DGR ML1",
+      "start_node_id": "BGP_GW_W",
+      "end_node_id": "DGR_GW_E",
+      "length_km": 150
+    },
+    {
+      "id": "E29",
+      "name": "BGP-DGR ML2",
+      "start_node_id": "BGP_GW_W",
+      "end_node_id": "DGR_GW_E",
+      "length_km": 150
+    },
+    {
+      "id": "E30",
+      "name": "BGP-DGR ML3",
+      "start_node_id": "BGP_GW_W",
+      "end_node_id": "DGR_GW_E",
+      "length_km": 150
+    },
+    {
+      "id": "E31",
+      "name": "DGR Entry -> PF1",
+      "start_node_id": "DGR_GW_E",
+      "end_node_id": "DGR_PF1",
+      "length_km": 0.5
+    },
+    {
+      "id": "E32",
+      "name": "DGR Entry -> PF2",
+      "start_node_id": "DGR_GW_E",
+      "end_node_id": "DGR_PF2",
+      "length_km": 0.5
+    },
+    {
+      "id": "E33",
+      "name": "DGR Entry -> PF3",
+      "start_node_id": "DGR_GW_E",
+      "end_node_id": "DGR_PF3",
+      "length_km": 0.5
+    },
+    {
+      "id": "E34",
+      "name": "DGR Entry -> PF4",
+      "start_node_id": "DGR_GW_E",
+      "end_node_id": "DGR_PF4",
+      "length_km": 0.5
+    },
+    {
+      "id": "E35",
+      "name": "DGR PF1 -> Exit",
+      "start_node_id": "DGR_PF1",
+      "end_node_id": "DGR_GW_W",
+      "length_km": 0.5
+    },
+    {
+      "id": "E36",
+      "name": "DGR PF2 -> Exit",
+      "start_node_id": "DGR_PF2",
+      "end_node_id": "DGR_GW_W",
+      "length_km": 0.5
+    },
+    {
+      "id": "E37",
+      "name": "DGR PF3 -> Exit",
+      "start_node_id": "DGR_PF3",
+      "end_node_id": "DGR_GW_W",
+      "length_km": 0.5
+    },
+    {
+      "id": "E38",
+      "name": "DGR PF4 -> Exit",
+      "start_node_id": "DGR_PF4",
+      "end_node_id": "DGR_GW_W",
+      "length_km": 0.5
+    },
+    {
+      "id": "E39",
+      "name": "DGR Through Track",
+      "start_node_id": "DGR_GW_E",
+      "end_node_id": "DGR_GW_W",
+      "length_km": 1
+    },
+    {
+      "id": "E40",
+      "name": "DGR-JCT_B ML1",
+      "start_node_id": "DGR_GW_W",
+      "end_node_id": "JCT_B_UP",
+      "length_km": 20
+    },
+    {
+      "id": "E41",
+      "name": "DGR-JCT_B ML2",
+      "start_node_id": "DGR_GW_W",
+      "end_node_id": "JCT_B_MID",
+      "length_km": 20
+    },
+    {
+      "id": "E42",
+      "name": "DGR-JCT_B ML3",
+      "start_node_id": "DGR_GW_W",
+      "end_node_id": "JCT_B_DN",
+      "length_km": 20
+    },
+    {
+      "id": "E43",
+      "name": "Crossover B UP-MID",
+      "start_node_id": "JCT_B_UP",
+      "end_node_id": "JCT_B_MID",
+      "length_km": 0.2
+    },
+    {
+      "id": "E44",
+      "name": "Crossover B MID-UP",
+      "start_node_id": "JCT_B_MID",
+      "end_node_id": "JCT_B_UP",
+      "length_km": 0.2
+    },
+    {
+      "id": "E45",
+      "name": "Crossover B MID-DN",
+      "start_node_id": "JCT_B_MID",
+      "end_node_id": "JCT_B_DN",
+      "length_km": 0.2
+    },
+    {
+      "id": "E46",
+      "name": "Crossover B DN-MID",
+      "start_node_id": "JCT_B_DN",
+      "end_node_id": "JCT_B_MID",
+      "length_km": 0.2
+    },
+    {
+      "id": "E47",
+      "name": "JCT_B-STX ML1",
+      "start_node_id": "JCT_B_UP",
+      "end_node_id": "STX_GW_E",
+      "length_km": 80
+    },
+    {
+      "id": "E48",
+      "name": "JCT_B-STX ML2",
+      "start_node_id": "JCT_B_MID",
+      "end_node_id": "STX_GW_E",
+      "length_km": 80
+    },
+    {
+      "id": "E49",
+      "name": "JCT_B-STX ML3",
+      "start_node_id": "JCT_B_DN",
+      "end_node_id": "STX_GW_E",
+      "length_km": 80
+    },
+    {
+      "id": "E50",
+      "name": "STX Entry -> PF1",
+      "start_node_id": "STX_GW_E",
+      "end_node_id": "STX_PF1",
+      "length_km": 0.5
+    },
+    {
+      "id": "E51",
+      "name": "STX Entry -> PF2",
+      "start_node_id": "STX_GW_E",
+      "end_node_id": "STX_PF2",
+      "length_km": 0.5
+    },
+    {
+      "id": "E52",
+      "name": "STX Entry -> PF3",
+      "start_node_id": "STX_GW_E",
+      "end_node_id": "STX_PF3",
+      "length_km": 0.5
+    },
+    {
+      "id": "E53",
+      "name": "STX Entry -> PF4",
+      "start_node_id": "STX_GW_E",
+      "end_node_id": "STX_PF4",
+      "length_km": 0.5
+    },
+    {
+      "id": "E54",
+      "name": "STX PF1 -> Exit",
+      "start_node_id": "STX_PF1",
+      "end_node_id": "STX_GW_W",
+      "length_km": 0.5
+    },
+    {
+      "id": "E55",
+      "name": "STX PF2 -> Exit",
+      "start_node_id": "STX_PF2",
+      "end_node_id": "STX_GW_W",
+      "length_km": 0.5
+    },
+    {
+      "id": "E56",
+      "name": "STX PF3 -> Exit",
+      "start_node_id": "STX_PF3",
+      "end_node_id": "STX_GW_W",
+      "length_km": 0.5
+    },
+    {
+      "id": "E57",
+      "name": "STX PF4 -> Exit",
+      "start_node_id": "STX_PF4",
+      "end_node_id": "STX_GW_W",
+      "length_km": 0.5
+    },
+    {
+      "id": "E58",
+      "name": "STX Through Track",
+      "start_node_id": "STX_GW_E",
+      "end_node_id": "STX_GW_W",
+      "length_km": 1
+    },
+    {
+      "id": "E59",
+      "name": "STX-HWH ML1",
+      "start_node_id": "STX_GW_W",
+      "end_node_id": "HWH_GW_E",
+      "length_km": 100
+    },
+    {
+      "id": "E60",
+      "name": "STX-HWH ML2",
+      "start_node_id": "STX_GW_W",
+      "end_node_id": "HWH_GW_E",
+      "length_km": 100
+    },
+    {
+      "id": "E61",
+      "name": "STX-HWH ML3",
+      "start_node_id": "STX_GW_W",
+      "end_node_id": "HWH_GW_E",
+      "length_km": 100
+    },
+    {
+      "id": "E62",
+      "name": "HWH Entry -> PF1",
+      "start_node_id": "HWH_GW_E",
+      "end_node_id": "HWH_PF1",
+      "length_km": 0.5
+    },
+    {
+      "id": "E63",
+      "name": "HWH Entry -> PF2",
+      "start_node_id": "HWH_GW_E",
+      "end_node_id": "HWH_PF2",
+      "length_km": 0.5
+    },
+    {
+      "id": "E64",
+      "name": "HWH Entry -> PF3",
+      "start_node_id": "HWH_GW_E",
+      "end_node_id": "HWH_PF3",
+      "length_km": 0.5
+    },
+    {
+      "id": "E65",
+      "name": "HWH Entry -> PF4",
+      "start_node_id": "HWH_GW_E",
+      "end_node_id": "HWH_PF4",
+      "length_km": 0.5
+    },
+    {
+      "id": "E66",
+      "name": "HWH PF1 -> Exit",
+      "start_node_id": "HWH_PF1",
+      "end_node_id": "HWH_GW_W",
+      "length_km": 0.5
+    },
+    {
+      "id": "E67",
+      "name": "HWH PF2 -> Exit",
+      "start_node_id": "HWH_PF2",
+      "end_node_id": "HWH_GW_W",
+      "length_km": 0.5
+    },
+    {
+      "id": "E68",
+      "name": "HWH PF3 -> Exit",
+      "start_node_id": "HWH_PF3",
+      "end_node_id": "HWH_GW_W",
+      "length_km": 0.5
+    },
+    {
+      "id": "E69",
+      "name": "HWH PF4 -> Exit",
+      "start_node_id": "HWH_PF4",
+      "end_node_id": "HWH_GW_W",
+      "length_km": 0.5
+    },
+    {
+      "id": "E70",
+      "name": "HWH Through Track",
+      "start_node_id": "HWH_GW_E",
+      "end_node_id": "HWH_GW_W",
+      "length_km": 1
+    }
+  ]
+}
