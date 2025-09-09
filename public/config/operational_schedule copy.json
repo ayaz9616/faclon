@@ -1,0 +1,47 @@
+{
+  "simulation_parameters": {
+    "time_scale_factor": 1,
+    "start_time": "08:00:00"
+  },
+  "train_roster": [
+    
+    {
+      "train_no": "13006",
+      "name": "Amritsar Mail",
+      "priority": 9,
+      "max_speed_kph": 110,
+      "color": "#27ae60",
+      "mission_plan": [
+        { "node_id": "PAT_PF3", "scheduled_arrival_time": "08:00:00", "scheduled_departure_time": "08:00:05" },
+        { "node_id": "BGP_PF1", "scheduled_arrival_time": "08:00:08", "scheduled_departure_time": "08:00:13" },
+        { "node_id": "RNJ_PF2", "scheduled_arrival_time": "08:00:16", "scheduled_departure_time": "08:00:21" },
+        { "node_id": "DRG_PF1", "scheduled_arrival_time": "08:00:24", "scheduled_departure_time": "08:00:29" },
+        { "node_id": "HWH_PF1", "scheduled_arrival_time": "08:00:32", "scheduled_departure_time": "08:00:37" }
+      ],
+      "route_path": [
+        "PAT_PF3",
+        "TT3",
+        "TT5",
+        "TT6",
+        "TT9",
+        "TT8",
+        "TT7",
+        "TT10",
+        "TT11",
+        "BGP_PF1",
+        "TT12",
+        "TT14",
+        "TT17",
+        "RNJ_PF2",
+        "TT18",
+        "TT19",
+        "DRG_PF1",
+        "TT22",
+        "TT24",
+        "TT26",
+        "TT27",
+        "HWH_PF1"
+      ]
+    }
+  ]
+}

@@ -26,7 +26,7 @@ export default function useSimulation() {
         .catch(err => setError(err));
     }
     fetchState();
-    interval = setInterval(fetchState, 1000);
+    interval = setInterval(fetchState, 100);
     return () => clearInterval(interval);
   }, []);
 
