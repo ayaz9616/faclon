@@ -83,9 +83,47 @@ export default function SimulationMap({ config, state, trainTrails }) {
   const containerRef = useRef();
   const lastTouchDist = useRef(null);
 
+  // Listen for fullscreen change to sync state (must be before any early return)
+  useEffect(() => {
+    function onFsChange() {
+      const fsElem = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
+      setIsFullscreen(!!fsElem);
+    }
+    document.addEventListener('fullscreenchange', onFsChange);
+    document.addEventListener('webkitfullscreenchange', onFsChange);
+    document.addEventListener('mozfullscreenchange', onFsChange);
+    document.addEventListener('MSFullscreenChange', onFsChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', onFsChange);
+      document.removeEventListener('webkitfullscreenchange', onFsChange);
+      document.removeEventListener('mozfullscreenchange', onFsChange);
+      document.removeEventListener('MSFullscreenChange', onFsChange);
+    };
+  }, []);
+
+  // Manual event listener for wheel to prevent passive listener issue
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const handleWheel = (e) => {
+      e.preventDefault();
+      setZoom(prevZoom => {
+        let newZoom = prevZoom - e.deltaY * 0.001;
+        return Math.max(0.2, Math.min(3, newZoom));
+      });
+    };
+
+    container.addEventListener('wheel', handleWheel, { passive: false });
+
+    return () => {
+      container.removeEventListener('wheel', handleWheel);
+    };
+  }, []); // Empty dependency array means this runs once on mount
+
   // Interpolation effect
   useEffect(() => {
-    if (!state) return;
+    if (!state?.trains) return;
     const now = Date.now();
     lastStateRef.current = { trains: interpTrains, time: now };
     nextStateRef.current = { trains: state.trains, time: now };
@@ -135,12 +173,6 @@ export default function SimulationMap({ config, state, trainTrails }) {
   function handleMouseUp() {
     setIsPanning(false);
   }
-  function handleWheel(e) {
-    e.preventDefault();
-    let newZoom = zoom - e.deltaY * 0.001;
-    newZoom = Math.max(0.2, Math.min(3, newZoom));
-    setZoom(newZoom);
-  }
   function handleTouchStart(e) {
     if (e.touches.length === 2) {
       const dx = e.touches[0].clientX - e.touches[1].clientX;
@@ -173,12 +205,31 @@ export default function SimulationMap({ config, state, trainTrails }) {
     }
   }
 
+  // Fullscreen handlers
+  function handleFullscreenToggle() {
+    setIsFullscreen(f => !f);
+    setTimeout(() => {
+      if (!containerRef.current) return;
+      if (!isFullscreen) {
+        if (containerRef.current.requestFullscreen) containerRef.current.requestFullscreen();
+        else if (containerRef.current.webkitRequestFullscreen) containerRef.current.webkitRequestFullscreen();
+        else if (containerRef.current.mozRequestFullScreen) containerRef.current.mozRequestFullScreen();
+        else if (containerRef.current.msRequestFullscreen) containerRef.current.msRequestFullscreen();
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+        else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
+        else if (document.msExitFullscreen) document.msExitFullscreen();
+      }
+    }, 10);
+  }
+
   // Make grid much larger
   const gridWidth = 6000;
   const gridHeight = 4000;
 
   // Early return for loading state (after hooks)
-  if (!config || !state) return null;
+  if (!config || !state) return <div className="w-full h-full bg-gray-800 flex items-center justify-center text-white">Loading Map...</div>;
   const { nodes, edges } = config;
   // (Removed old gridWidth/gridHeight, using large scrollable grid)
 
@@ -257,51 +308,13 @@ export default function SimulationMap({ config, state, trainTrails }) {
       gridDots.push(
         <div
           key={`dot-${x}-${y}`}
-          className="absolute w-2 h-2 rounded-full bg-green-400 opacity-80"
-          style={{ left: x - 2, top: y - 2, zIndex: 1 }} // w-2 h-2 => 4px, offset by 2px to center
+          className="absolute w-1 h-1 rounded-full bg-green-400 opacity-80"
+          style={{ left: x - 0.5, top: y - 0.5, zIndex: 1 }} // w-1 h-1 => 2px, offset by 0.5px to center
           title={`(${x}, ${y})`}
         />
       );
     }
   }
-
-  // Fullscreen handlers
-  function handleFullscreenToggle() {
-    setIsFullscreen(f => !f);
-    setTimeout(() => {
-      if (!containerRef.current) return;
-      if (!isFullscreen) {
-        if (containerRef.current.requestFullscreen) containerRef.current.requestFullscreen();
-        else if (containerRef.current.webkitRequestFullscreen) containerRef.current.webkitRequestFullscreen();
-        else if (containerRef.current.mozRequestFullScreen) containerRef.current.mozRequestFullScreen();
-        else if (containerRef.current.msRequestFullscreen) containerRef.current.msRequestFullscreen();
-      } else {
-        if (document.exitFullscreen) document.exitFullscreen();
-        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
-        else if (document.mozCancelFullScreen) document.mozCancelFullScreen();
-        else if (document.msExitFullscreen) document.msExitFullscreen();
-      }
-    }, 10);
-  }
-
-  // Listen for fullscreen change to sync state (must be before any early return)
-  useEffect(() => {
-    function onFsChange() {
-      const fsElem = document.fullscreenElement || document.webkitFullscreenElement || document.mozFullScreenElement || document.msFullscreenElement;
-      setIsFullscreen(!!fsElem);
-    }
-    document.addEventListener('fullscreenchange', onFsChange);
-    document.addEventListener('webkitfullscreenchange', onFsChange);
-    document.addEventListener('mozfullscreenchange', onFsChange);
-    document.addEventListener('MSFullscreenChange', onFsChange);
-    return () => {
-      document.removeEventListener('fullscreenchange', onFsChange);
-      document.removeEventListener('webkitfullscreenchange', onFsChange);
-      document.removeEventListener('mozfullscreenchange', onFsChange);
-      document.removeEventListener('MSFullscreenChange', onFsChange);
-    };
-  }, []);
-
 
 
   return (
@@ -313,7 +326,6 @@ export default function SimulationMap({ config, state, trainTrails }) {
       onMouseMove={handleMouseMove}
       onMouseUp={handleMouseUp}
       onMouseLeave={handleMouseUp}
-      onWheel={handleWheel}
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
@@ -361,7 +373,7 @@ export default function SimulationMap({ config, state, trainTrails }) {
           // Perpendicular vector (normalized)
           const perpX = -normY;
           const perpY = normX;
-          const railOffset = 7; // px, half the distance between rails
+          const railOffset = 12; // px, half the distance between rails (increased for wider gap)
           // Rail 1
           const s1 = { x: start.left + perpX * railOffset, y: start.top + perpY * railOffset };
           const e1 = { x: end.left + perpX * railOffset, y: end.top + perpY * railOffset };
@@ -457,39 +469,71 @@ export default function SimulationMap({ config, state, trainTrails }) {
             <div
               key={train.train_no}
               className="absolute"
-              style={{ left: pos.left - 24, top: pos.top - 24, zIndex: 3 }}
+              style={{ left: pos.left - 40, top: pos.top - 40, zIndex: 3 }}
               title={train.name}
             >
-              <Image src="https://media.tenor.com/V6HYr1pd1VkAAAAi/train.gif" alt="train" width={48} height={48} />
+              <Image src="https://media.tenor.com/V6HYr1pd1VkAAAAi/train.gif" alt="train" width={80} height={80} style={{ height: 'auto' }}/>
             </div>
           );
         })}
-        {/* Dotted train trails (side of track) */}
-        {state.trains.map(train => {
+        {/* Train Trails */}
+        {state?.trains?.map(train => {
           if (!trainTrails?.[train.train_no]) return null;
-          const route = train.route_path;
-          if (!route || route.length < 2) return null;
+
+          // Get the full train configuration, including the route_path
+          const trainConfig = config.train_roster.find(t => t.train_no === train.train_no);
+          if (!trainConfig || !trainConfig.route_path) return null;
+
           const trailSegments = [];
-          for (let i = 1; i < route.length; i++) {
-            const fromNode = nodes.find(n => n.id === route[i - 1]);
-            const toNode = nodes.find(n => n.id === route[i]);
-            if (!fromNode || !toNode) continue;
-            const from = getNodePosition(fromNode, gridWidth, gridHeight);
-            const to = getNodePosition(toNode, gridWidth, gridHeight);
-            trailSegments.push(
-              <svg key={`trail-${train.train_no}-${i}`} style={{ position: 'absolute', left: Math.min(from.left, to.left), top: Math.min(from.top, to.top), pointerEvents: 'none', zIndex: 2 }} width={Math.abs(to.left - from.left) || 1} height={Math.abs(to.top - from.top) || 1}>
-                <line
-                  x1={from.left < to.left ? 0 : Math.abs(from.left - to.left)}
-                  y1={from.top < to.top ? 0 : Math.abs(from.top - to.top)}
-                  x2={to.left < from.left ? 0 : Math.abs(to.left - from.left)}
-                  y2={to.top < from.top ? 0 : Math.abs(to.top - from.top)}
-                  stroke={train.color}
-                  strokeDasharray="4,4"
-                  strokeWidth="6"
-                  opacity="0.7"
-                />
-              </svg>
+          for (let i = 0; i < trainConfig.route_path.length - 1; i++) {
+            const startNodeId = trainConfig.route_path[i];
+            const endNodeId = trainConfig.route_path[i + 1];
+            
+            const edge = edges.find(e => 
+              (e.start_node_id === startNodeId && e.end_node_id === endNodeId) ||
+              (e.start_node_id === endNodeId && e.end_node_id === startNodeId)
             );
+
+            if (edge) {
+              const startNode = nodes.find(n => n.id === startNodeId);
+              const endNode = nodes.find(n => n.id === endNodeId);
+
+              if (startNode && endNode) {
+                const start = getNodePosition(startNode, gridWidth, gridHeight);
+                const end = getNodePosition(endNode, gridWidth, gridHeight);
+                
+                const minX = Math.min(start.left, end.left);
+                const minY = Math.min(start.top, end.top);
+                const width = Math.abs(start.left - end.left) || 2;
+                const height = Math.abs(start.top - end.top) || 2;
+
+                trailSegments.push(
+                  <svg
+                    key={`trail-${train.train_no}-${edge.id}`}
+                    style={{
+                      position: 'absolute',
+                      left: minX,
+                      top: minY,
+                      width: width,
+                      height: height,
+                      pointerEvents: 'none',
+                      zIndex: 1,
+                      filter: `drop-shadow(0 0 10px ${train.color})`,
+                    }}
+                  >
+                    <line
+                      x1={start.left - minX}
+                      y1={start.top - minY}
+                      x2={end.left - minX}
+                      y2={end.top - minY}
+                      stroke={train.color}
+                      strokeWidth="4"
+                      opacity="1"
+                    />
+                  </svg>
+                );
+              }
+            }
           }
           return trailSegments;
         })}

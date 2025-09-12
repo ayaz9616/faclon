@@ -1,7 +1,7 @@
 {
   "simulation_parameters": {
-        "time_scale_factor": 1,
-    "start_time": "08:00:00"
+    "start_time": "08:00:00",
+    "time_scale_factor": 1
   },
   "train_roster": [
     {
@@ -11,59 +11,121 @@
       "max_speed_kph": 110,
       "color": "#27ae60",
       "mission_plan": [
-    { "node_id": "PAT_PF3", "scheduled_arrival_time": "08:00:00", "scheduled_departure_time": "08:00:03" },
-    { "node_id": "TT3",     "scheduled_arrival_time": "08:00:06", "scheduled_departure_time": "08:00:06" },
-    { "node_id": "TT5",     "scheduled_arrival_time": "08:00:09", "scheduled_departure_time": "08:00:09" },
-    { "node_id": "TT6",     "scheduled_arrival_time": "08:00:12", "scheduled_departure_time": "08:00:12" },
-    { "node_id": "TT9",     "scheduled_arrival_time": "08:00:15", "scheduled_departure_time": "08:00:15" },
-    { "node_id": "TT8",     "scheduled_arrival_time": "08:00:18", "scheduled_departure_time": "08:00:18" },
-    { "node_id": "TT7",     "scheduled_arrival_time": "08:00:21", "scheduled_departure_time": "08:00:21" },
-    { "node_id": "TT10",    "scheduled_arrival_time": "08:00:24", "scheduled_departure_time": "08:00:24" },
-    { "node_id": "TT11",    "scheduled_arrival_time": "08:00:27", "scheduled_departure_time": "08:00:27" },
-    { "node_id": "BGP_PF1", "scheduled_arrival_time": "08:00:30", "scheduled_departure_time": "08:00:33" },
-    { "node_id": "TT12",    "scheduled_arrival_time": "08:00:36", "scheduled_departure_time": "08:00:36" },
-    { "node_id": "TT14",    "scheduled_arrival_time": "08:00:39", "scheduled_departure_time": "08:00:39" },
-    { "node_id": "TT17",    "scheduled_arrival_time": "08:00:42", "scheduled_departure_time": "08:00:42" },
-    { "node_id": "RNJ_PF2", "scheduled_arrival_time": "08:00:45", "scheduled_departure_time": "08:00:48" },
-    { "node_id": "TT18",    "scheduled_arrival_time": "08:00:51", "scheduled_departure_time": "08:00:51" },
-    { "node_id": "TT19",    "scheduled_arrival_time": "08:00:54", "scheduled_departure_time": "08:00:54" },
-    { "node_id": "DRG_PF1", "scheduled_arrival_time": "08:00:57", "scheduled_departure_time": "08:01:00" },
-    { "node_id": "TT22",    "scheduled_arrival_time": "08:01:03", "scheduled_departure_time": "08:01:03" },
-    { "node_id": "TT24",    "scheduled_arrival_time": "08:01:06", "scheduled_departure_time": "08:01:06" },
-    { "node_id": "TT26",    "scheduled_arrival_time": "08:01:09", "scheduled_departure_time": "08:01:09" },
-    { "node_id": "TT27",    "scheduled_arrival_time": "08:01:12", "scheduled_departure_time": "08:01:12" },
-    { "node_id": "HWH_PF1", "scheduled_arrival_time": "08:01:15", "scheduled_departure_time": "08:01:18" }
-  ],
-      "route_path": [
-    "PAT_PF1", "TT1", "TT2", "TT5", "TT6", "TT9", "TT8", "BGP_PF3", "TT13", "TT15", "TT16", "RNJ_PF1", "TT19", "DRG_PF1", "TT22", "TT24", "TT26", "TT27", "HWH_PF1"
-      ]
-    },
-    {
-      "train_no": "13007",
-      "name": "Howrah Express",
-      "priority": 8,
-      "max_speed_kph": 110,
-      "color": "#2980b9",
-      "mission_plan": [
-    { "node_id": "PAT_PF1", "scheduled_arrival_time": "08:00:00", "scheduled_departure_time": "08:00:03" },
-    { "node_id": "TT1",     "scheduled_arrival_time": "08:00:06", "scheduled_departure_time": "08:00:06" },
-    { "node_id": "TT2",     "scheduled_arrival_time": "08:00:09", "scheduled_departure_time": "08:00:09" },
-    { "node_id": "TT5",     "scheduled_arrival_time": "08:00:12", "scheduled_departure_time": "08:00:12" },
-    { "node_id": "TT6",     "scheduled_arrival_time": "08:00:15", "scheduled_departure_time": "08:00:15" },
-    { "node_id": "TT9",     "scheduled_arrival_time": "08:00:18", "scheduled_departure_time": "08:00:18" },
-    { "node_id": "TT8",     "scheduled_arrival_time": "08:00:21", "scheduled_departure_time": "08:00:21" },
-    { "node_id": "BGP_PF3", "scheduled_arrival_time": "08:00:24", "scheduled_departure_time": "08:00:27" },
-    { "node_id": "TT13",    "scheduled_arrival_time": "08:00:30", "scheduled_departure_time": "08:00:30" },
-    { "node_id": "TT15",    "scheduled_arrival_time": "08:00:33", "scheduled_departure_time": "08:00:33" },
-    { "node_id": "TT16",    "scheduled_arrival_time": "08:00:36", "scheduled_departure_time": "08:00:36" },
-    { "node_id": "RNJ_PF1", "scheduled_arrival_time": "08:00:39", "scheduled_departure_time": "08:00:42" },
-    { "node_id": "TT19",    "scheduled_arrival_time": "08:00:45", "scheduled_departure_time": "08:00:45" },
-    { "node_id": "DRG_PF1", "scheduled_arrival_time": "08:00:48", "scheduled_departure_time": "08:00:51" },
-    { "node_id": "TT22",    "scheduled_arrival_time": "08:00:54", "scheduled_departure_time": "08:00:54" },
-    { "node_id": "TT24",    "scheduled_arrival_time": "08:01:00", "scheduled_departure_time": "08:01:00" },
-    { "node_id": "TT26",    "scheduled_arrival_time": "08:01:03", "scheduled_departure_time": "08:01:03" },
-    { "node_id": "TT27",    "scheduled_arrival_time": "08:01:06", "scheduled_departure_time": "08:01:06" },
-    { "node_id": "HWH_PF1", "scheduled_arrival_time": "08:01:09", "scheduled_departure_time": "08:01:12" }
+        {
+          "node_id": "PAT_PF3",
+          "scheduled_arrival_time": "08:01:00",
+          "scheduled_departure_time": "08:02:00"
+        },
+        {
+          "node_id": "TT3",
+          "scheduled_arrival_time": "08:03:06",
+          "scheduled_departure_time": "08:04:06"
+        },
+        {
+          "node_id": "TT5",
+          "scheduled_arrival_time": "08:05:07",
+          "scheduled_departure_time": "08:06:07"
+        },
+        {
+          "node_id": "TT6",
+          "scheduled_arrival_time": "08:07:00",
+          "scheduled_departure_time": "08:08:00"
+        },
+        {
+          "node_id": "TT9",
+          "scheduled_arrival_time": "08:09:15",
+          "scheduled_departure_time": "08:10:15"
+        },
+        {
+          "node_id": "TT8",
+          "scheduled_arrival_time": "08:11:18",
+          "scheduled_departure_time": "08:12:18"
+        },
+        {
+          "node_id": "TT7",
+          "scheduled_arrival_time": "08:13:21",
+          "scheduled_departure_time": "08:14:21"
+        },
+        {
+          "node_id": "TT10",
+          "scheduled_arrival_time": "08:15:22",
+          "scheduled_departure_time": "08:16:22"
+        },
+        {
+          "node_id": "TT11",
+          "scheduled_arrival_time": "08:10:26",
+          "scheduled_departure_time": "08:10:26"
+        },
+        {
+          "node_id": "BGP_PF1",
+          "scheduled_arrival_time": "08:10:30",
+          "scheduled_departure_time": "08:10:33"
+        },
+        {
+          "node_id": "TT12",
+          "scheduled_arrival_time": "08:10:36",
+          "scheduled_departure_time": "08:10:36"
+        },
+        {
+          "node_id": "TT14",
+          "scheduled_arrival_time": "08:10:37",
+          "scheduled_departure_time": "08:10:37"
+        },
+        {
+          "node_id": "TT17",
+          "scheduled_arrival_time": "08:10:41",
+          "scheduled_departure_time": "08:10:41"
+        },
+        {
+          "node_id": "RNJ_PF2",
+          "scheduled_arrival_time": "08:10:45",
+          "scheduled_departure_time": "08:10:48"
+        },
+        {
+          "node_id": "TT18",
+          "scheduled_arrival_time": "08:10:51",
+          "scheduled_departure_time": "08:10:51"
+        },
+        {
+          "node_id": "TT20",
+          "scheduled_arrival_time": "08:10:52",
+          "scheduled_departure_time": "08:10:52"
+        },
+        {
+          "node_id": "TT21",
+          "scheduled_arrival_time": "08:10:56",
+          "scheduled_departure_time": "08:10:56"
+        },
+        {
+          "node_id": "DRG_PF1",
+          "scheduled_arrival_time": "08:11:00",
+          "scheduled_departure_time": "08:11:03"
+        },
+        {
+          "node_id": "TT22",
+          "scheduled_arrival_time": "08:11:06",
+          "scheduled_departure_time": "08:11:06"
+        },
+        {
+          "node_id": "TT24",
+          "scheduled_arrival_time": "08:11:07",
+          "scheduled_departure_time": "08:11:07"
+        },
+        {
+          "node_id": "TT26",
+          "scheduled_arrival_time": "08:11:11",
+          "scheduled_departure_time": "08:11:11"
+        },
+        {
+          "node_id": "TT27",
+          "scheduled_arrival_time": "08:11:15",
+          "scheduled_departure_time": "08:11:15"
+        },
+        {
+          "node_id": "HWH_PF1",
+          "scheduled_arrival_time": "08:11:18",
+          "scheduled_departure_time": "08:11:21"
+        }
       ],
       "route_path": [
         "PAT_PF3",
@@ -81,6 +143,132 @@
         "TT17",
         "RNJ_PF2",
         "TT18",
+        "TT20",
+        "TT21",
+        "DRG_PF1",
+        "TT22",
+        "TT24",
+        "TT26",
+        "TT27",
+        "HWH_PF1"
+      ]
+    },
+    {
+      "train_no": "13007",
+      "name": "Howrah Express",
+      "priority": 8,
+      "max_speed_kph": 110,
+      "color": "#2980b9",
+      "mission_plan": [
+        {
+          "node_id": "PAT_PF1",
+          "scheduled_arrival_time": "08:02:00",
+          "scheduled_departure_time": "08:02:03"
+        },
+        {
+          "node_id": "TT1",
+          "scheduled_arrival_time": "08:02:07",
+          "scheduled_departure_time": "08:02:07"
+        },
+        {
+          "node_id": "TT2",
+          "scheduled_arrival_time": "08:02:10",
+          "scheduled_departure_time": "08:02:10"
+        },
+        {
+          "node_id": "TT5",
+          "scheduled_arrival_time": "08:02:11",
+          "scheduled_departure_time": "08:02:11"
+        },
+        {
+          "node_id": "TT6",
+          "scheduled_arrival_time": "08:02:15",
+          "scheduled_departure_time": "08:02:15"
+        },
+        {
+          "node_id": "TT9",
+          "scheduled_arrival_time": "08:15:18",
+          "scheduled_departure_time": "08:15:18"
+        },
+        {
+          "node_id": "TT8",
+          "scheduled_arrival_time": "08:15:22",
+          "scheduled_departure_time": "08:15:22"
+        },
+        {
+          "node_id": "BGP_PF3",
+          "scheduled_arrival_time": "08:15:25",
+          "scheduled_departure_time": "08:15:26"
+        },
+        {
+          "node_id": "TT13",
+          "scheduled_arrival_time": "08:15:30",
+          "scheduled_departure_time": "08:15:30"
+        },
+        {
+          "node_id": "TT15",
+          "scheduled_arrival_time": "08:15:33",
+          "scheduled_departure_time": "08:15:33"
+        },
+        {
+          "node_id": "TT16",
+          "scheduled_arrival_time": "08:15:37",
+          "scheduled_departure_time": "08:15:37"
+        },
+        {
+          "node_id": "RNJ_PF1",
+          "scheduled_arrival_time": "08:15:40",
+          "scheduled_departure_time": "08:15:41"
+        },
+        {
+          "node_id": "TT19",
+          "scheduled_arrival_time": "08:15:45",
+          "scheduled_departure_time": "08:15:45"
+        },
+        {
+          "node_id": "DRG_PF1",
+          "scheduled_arrival_time": "08:15:48",
+          "scheduled_departure_time": "08:15:52"
+        },
+        {
+          "node_id": "TT22",
+          "scheduled_arrival_time": "08:18:55",
+          "scheduled_departure_time": "08:18:55"
+        },
+        {
+          "node_id": "TT24",
+          "scheduled_arrival_time": "08:18:56",
+          "scheduled_departure_time": "08:18:56"
+        },
+        {
+          "node_id": "TT26",
+          "scheduled_arrival_time": "08:19:00",
+          "scheduled_departure_time": "08:19:00"
+        },
+        {
+          "node_id": "TT27",
+          "scheduled_arrival_time": "08:19:03",
+          "scheduled_departure_time": "08:19:03"
+        },
+        {
+          "node_id": "HWH_PF1",
+          "scheduled_arrival_time": "08:19:07",
+          "scheduled_departure_time": "08:19:10"
+        }
+      ],
+      "route_path": [
+        "PAT_PF1",
+        "TT1",
+        "TT2",
+        "TT5",
+        "TT6",
+        "TT9",
+        "TT8",
+        "BGP_PF3",
+        "TT13",
+        "TT15",
+        "TT16",
+        "RNJ_PF1",
         "TT19",
         "DRG_PF1",
         "TT22",
@@ -97,52 +285,104 @@
       "max_speed_kph": 110,
       "color": "#e67e22",
       "mission_plan": [
-        { "node_id": "PAT_PF3", "scheduled_arrival_time": "08:00:20", "scheduled_departure_time": "08:00:23" },
-        { "node_id": "TT3",     "scheduled_arrival_time": "08:00:26", "scheduled_departure_time": "08:00:26" },
-        { "node_id": "TT5",     "scheduled_arrival_time": "08:00:29", "scheduled_departure_time": "08:00:29" },
-        { "node_id": "TT6",     "scheduled_arrival_time": "08:00:32", "scheduled_departure_time": "08:00:32" },
-        { "node_id": "TT9",     "scheduled_arrival_time": "08:00:35", "scheduled_departure_time": "08:00:35" },
-        { "node_id": "TT8",     "scheduled_arrival_time": "08:00:38", "scheduled_departure_time": "08:00:38" },
-        { "node_id": "TT7",     "scheduled_arrival_time": "08:00:41", "scheduled_departure_time": "08:00:41" },
-        { "node_id": "TT10",    "scheduled_arrival_time": "08:00:44", "scheduled_departure_time": "08:00:44" },
-        { "node_id": "TT11",    "scheduled_arrival_time": "08:00:47", "scheduled_departure_time": "08:00:47" },
-        { "node_id": "BGP_PF1", "scheduled_arrival_time": "08:00:50", "scheduled_departure_time": "08:00:53" },
-        { "node_id": "TT12",    "scheduled_arrival_time": "08:00:56", "scheduled_departure_time": "08:00:56" },
-        { "node_id": "TT14",    "scheduled_arrival_time": "08:00:59", "scheduled_departure_time": "08:00:59" },
-        { "node_id": "TT17",    "scheduled_arrival_time": "08:01:02", "scheduled_departure_time": "08:01:02" },
-        { "node_id": "RNJ_PF2", "scheduled_arrival_time": "08:01:05", "scheduled_departure_time": "08:01:08" },
-        { "node_id": "TT18",    "scheduled_arrival_time": "08:01:11", "scheduled_departure_time": "08:01:11" },
-        { "node_id": "TT19",    "scheduled_arrival_time": "08:01:14", "scheduled_departure_time": "08:01:14" },
-        { "node_id": "DRG_PF1", "scheduled_arrival_time": "08:01:17", "scheduled_departure_time": "08:01:20" },
-        { "node_id": "TT22",    "scheduled_arrival_time": "08:01:23", "scheduled_departure_time": "08:01:23" },
-        { "node_id": "TT24",    "scheduled_arrival_time": "08:01:26", "scheduled_departure_time": "08:01:26" },
-        { "node_id": "TT26",    "scheduled_arrival_time": "08:01:29", "scheduled_departure_time": "08:01:29" },
-        { "node_id": "TT27",    "scheduled_arrival_time": "08:01:32", "scheduled_departure_time": "08:01:32" },
-        { "node_id": "HWH_PF1", "scheduled_arrival_time": "08:01:35", "scheduled_departure_time": "08:01:38" }
+        {
+          "node_id": "PAT_PF4",
+          "scheduled_arrival_time": "08:02:02",
+          "scheduled_departure_time": "08:02:03"
+        },
+        {
+          "node_id": "TT4",
+          "scheduled_arrival_time": "08:02:07",
+          "scheduled_departure_time": "08:02:07"
+        },
+        {
+          "node_id": "TT9",
+          "scheduled_arrival_time": "08:02:11",
+          "scheduled_departure_time": "08:02:11"
+        },
+        {
+          "node_id": "TT8",
+          "scheduled_arrival_time": "08:19:14",
+          "scheduled_departure_time": "08:19:14"
+        },
+        {
+          "node_id": "BGP_PF3",
+          "scheduled_arrival_time": "08:19:17",
+          "scheduled_departure_time": "08:19:18"
+        },
+        {
+          "node_id": "TT13",
+          "scheduled_arrival_time": "08:19:22",
+          "scheduled_departure_time": "08:19:22"
+        },
+        {
+          "node_id": "TT15",
+          "scheduled_arrival_time": "08:19:26",
+          "scheduled_departure_time": "08:19:26"
+        },
+        {
+          "node_id": "TT14",
+          "scheduled_arrival_time": "08:19:29",
+          "scheduled_departure_time": "08:19:29"
+        },
+        {
+          "node_id": "TT17",
+          "scheduled_arrival_time": "08:19:32",
+          "scheduled_departure_time": "08:19:32"
+        },
+        {
+          "node_id": "RNJ_PF4",
+          "scheduled_arrival_time": "08:19:33",
+          "scheduled_departure_time": "08:19:37"
+        },
+        {
+          "node_id": "TT20",
+          "scheduled_arrival_time": "08:19:41",
+          "scheduled_departure_time": "08:19:41"
+        },
+        {
+          "node_id": "TT21",
+          "scheduled_arrival_time": "08:19:44",
+          "scheduled_departure_time": "08:19:44"
+        },
+        {
+          "node_id": "DRG_PF2",
+          "scheduled_arrival_time": "08:19:47",
+          "scheduled_departure_time": "08:19:48"
+        },
+        {
+          "node_id": "TT23",
+          "scheduled_arrival_time": "08:19:52",
+          "scheduled_departure_time": "08:19:52"
+        },
+        {
+          "node_id": "TT25",
+          "scheduled_arrival_time": "08:19:56",
+          "scheduled_departure_time": "08:19:56"
+        },
+        {
+          "node_id": "HWH_PF5",
+          "scheduled_arrival_time": "08:19:59",
+          "scheduled_departure_time": "08:20:02"
+        }
       ],
       "route_path": [
-        "PAT_PF3",
-        "TT3",
-        "TT5",
-        "TT6",
+        "PAT_PF4",
+        "TT4",
         "TT9",
         "TT8",
-        "TT7",
-        "TT10",
-        "TT11",
-        "BGP_PF1",
-        "TT12",
+        "BGP_PF3",
+        "TT13",
+        "TT15",
         "TT14",
         "TT17",
-        "RNJ_PF2",
-        "TT18",
-        "TT19",
-        "DRG_PF1",
-        "TT22",
-        "TT24",
-        "TT26",
-        "TT27",
-        "HWH_PF1"
+        "RNJ_PF4",
+        "TT20",
+        "TT21",
+        "DRG_PF2",
+        "TT23",
+        "TT25",
+        "HWH_PF5"
       ]
     },
     {
@@ -152,28 +392,116 @@
       "max_speed_kph": 110,
       "color": "#8e44ad",
       "mission_plan": [
-        { "node_id": "PAT_PF3", "scheduled_arrival_time": "08:00:30", "scheduled_departure_time": "08:00:33" },
-        { "node_id": "TT3",     "scheduled_arrival_time": "08:00:36", "scheduled_departure_time": "08:00:36" },
-        { "node_id": "TT5",     "scheduled_arrival_time": "08:00:39", "scheduled_departure_time": "08:00:39" },
-        { "node_id": "TT6",     "scheduled_arrival_time": "08:00:42", "scheduled_departure_time": "08:00:42" },
-        { "node_id": "TT9",     "scheduled_arrival_time": "08:00:45", "scheduled_departure_time": "08:00:45" },
-        { "node_id": "TT8",     "scheduled_arrival_time": "08:00:48", "scheduled_departure_time": "08:00:48" },
-        { "node_id": "TT7",     "scheduled_arrival_time": "08:00:51", "scheduled_departure_time": "08:00:51" },
-        { "node_id": "TT10",    "scheduled_arrival_time": "08:00:54", "scheduled_departure_time": "08:00:54" },
-        { "node_id": "TT11",    "scheduled_arrival_time": "08:00:57", "scheduled_departure_time": "08:00:57" },
-        { "node_id": "BGP_PF1", "scheduled_arrival_time": "08:01:00", "scheduled_departure_time": "08:01:03" },
-        { "node_id": "TT12",    "scheduled_arrival_time": "08:01:06", "scheduled_departure_time": "08:01:06" },
-        { "node_id": "TT14",    "scheduled_arrival_time": "08:01:09", "scheduled_departure_time": "08:01:09" },
-        { "node_id": "TT17",    "scheduled_arrival_time": "08:01:12", "scheduled_departure_time": "08:01:12" },
-        { "node_id": "RNJ_PF2", "scheduled_arrival_time": "08:01:15", "scheduled_departure_time": "08:01:18" },
-        { "node_id": "TT18",    "scheduled_arrival_time": "08:01:21", "scheduled_departure_time": "08:01:21" },
-        { "node_id": "TT19",    "scheduled_arrival_time": "08:01:24", "scheduled_departure_time": "08:01:24" },
-        { "node_id": "DRG_PF1", "scheduled_arrival_time": "08:01:27", "scheduled_departure_time": "08:01:30" },
-        { "node_id": "TT22",    "scheduled_arrival_time": "08:01:33", "scheduled_departure_time": "08:01:33" },
-        { "node_id": "TT24",    "scheduled_arrival_time": "08:01:36", "scheduled_departure_time": "08:01:36" },
-        { "node_id": "TT26",    "scheduled_arrival_time": "08:01:39", "scheduled_departure_time": "08:01:39" },
-        { "node_id": "TT27",    "scheduled_arrival_time": "08:01:42", "scheduled_departure_time": "08:01:42" },
-        { "node_id": "HWH_PF1", "scheduled_arrival_time": "08:01:45", "scheduled_departure_time": "08:01:48" }
+        {
+          "node_id": "PAT_PF3",
+          "scheduled_arrival_time": "08:10",
+          "scheduled_departure_time": "08:10"
+        },
+        {
+          "node_id": "TT3",
+          "scheduled_arrival_time": "08:13:11",
+          "scheduled_departure_time": "08:13:11"
+        },
+        {
+          "node_id": "TT5",
+          "scheduled_arrival_time": "08:13:14",
+          "scheduled_departure_time": "08:13:14"
+        },
+        {
+          "node_id": "TT6",
+          "scheduled_arrival_time": "08:16:00",
+          "scheduled_departure_time": "08:16:00"
+        },
+        {
+          "node_id": "TT9",
+          "scheduled_arrival_time": "08:19:18",
+          "scheduled_departure_time": "08:19:18"
+        },
+        {
+          "node_id": "TT8",
+          "scheduled_arrival_time": "08:26:22",
+          "scheduled_departure_time": "08:26:22"
+        },
+        {
+          "node_id": "TT7",
+          "scheduled_arrival_time": "08:26:26",
+          "scheduled_departure_time": "08:26:26"
+        },
+        {
+          "node_id": "TT10",
+          "scheduled_arrival_time": "08:26:29",
+          "scheduled_departure_time": "08:26:29"
+        },
+        {
+          "node_id": "TT11",
+          "scheduled_arrival_time": "08:26:32",
+          "scheduled_departure_time": "08:26:32"
+        },
+        {
+          "node_id": "BGP_PF1",
+          "scheduled_arrival_time": "08:26:33",
+          "scheduled_departure_time": "08:26:37"
+        },
+        {
+          "node_id": "TT12",
+          "scheduled_arrival_time": "08:26:41",
+          "scheduled_departure_time": "08:26:41"
+        },
+        {
+          "node_id": "TT14",
+          "scheduled_arrival_time": "08:26:44",
+          "scheduled_departure_time": "08:26:44"
+        },
+        {
+          "node_id": "TT17",
+          "scheduled_arrival_time": "08:26:47",
+          "scheduled_departure_time": "08:26:47"
+        },
+        {
+          "node_id": "RNJ_PF2",
+          "scheduled_arrival_time": "08:26:48",
+          "scheduled_departure_time": "08:26:52"
+        },
+        {
+          "node_id": "TT18",
+          "scheduled_arrival_time": "08:26:56",
+          "scheduled_departure_time": "08:26:56"
+        },
+        {
+          "node_id": "TT19",
+          "scheduled_arrival_time": "08:26:59",
+          "scheduled_departure_time": "08:26:59"
+        },
+        {
+          "node_id": "DRG_PF1",
+          "scheduled_arrival_time": "08:27:02",
+          "scheduled_departure_time": "08:27:03"
+        },
+        {
+          "node_id": "TT22",
+          "scheduled_arrival_time": "08:27:07",
+          "scheduled_departure_time": "08:27:07"
+        },
+        {
+          "node_id": "TT24",
+          "scheduled_arrival_time": "08:27:11",
+          "scheduled_departure_time": "08:27:11"
+        },
+        {
+          "node_id": "TT26",
+          "scheduled_arrival_time": "08:27:14",
+          "scheduled_departure_time": "08:27:14"
+        },
+        {
+          "node_id": "TT27",
+          "scheduled_arrival_time": "08:27:17",
+          "scheduled_departure_time": "08:27:17"
+        },
+        {
+          "node_id": "HWH_PF1",
+          "scheduled_arrival_time": "08:27:18",
+          "scheduled_departure_time": "08:27:22"
+        }
       ],
       "route_path": [
         "PAT_PF3",
@@ -207,52 +535,235 @@
       "max_speed_kph": 110,
       "color": "#c0392b",
       "mission_plan": [
-        { "node_id": "PAT_PF3", "scheduled_arrival_time": "08:00:40", "scheduled_departure_time": "08:00:43" },
-        { "node_id": "TT3",     "scheduled_arrival_time": "08:00:46", "scheduled_departure_time": "08:00:46" },
-        { "node_id": "TT5",     "scheduled_arrival_time": "08:00:49", "scheduled_departure_time": "08:00:49" },
-        { "node_id": "TT6",     "scheduled_arrival_time": "08:00:52", "scheduled_departure_time": "08:00:52" },
-        { "node_id": "TT9",     "scheduled_arrival_time": "08:00:55", "scheduled_departure_time": "08:00:55" },
-        { "node_id": "TT8",     "scheduled_arrival_time": "08:00:58", "scheduled_departure_time": "08:00:58" },
-        { "node_id": "TT7",     "scheduled_arrival_time": "08:01:01", "scheduled_departure_time": "08:01:01" },
-        { "node_id": "TT10",    "scheduled_arrival_time": "08:01:04", "scheduled_departure_time": "08:01:04" },
-        { "node_id": "TT11",    "scheduled_arrival_time": "08:01:07", "scheduled_departure_time": "08:01:07" },
-        { "node_id": "BGP_PF1", "scheduled_arrival_time": "08:01:10", "scheduled_departure_time": "08:01:13" },
-        { "node_id": "TT12",    "scheduled_arrival_time": "08:01:16", "scheduled_departure_time": "08:01:16" },
-        { "node_id": "TT14",    "scheduled_arrival_time": "08:01:19", "scheduled_departure_time": "08:01:19" },
-        { "node_id": "TT17",    "scheduled_arrival_time": "08:01:22", "scheduled_departure_time": "08:01:22" },
-        { "node_id": "RNJ_PF2", "scheduled_arrival_time": "08:01:25", "scheduled_departure_time": "08:01:28" },
-        { "node_id": "TT18",    "scheduled_arrival_time": "08:01:31", "scheduled_departure_time": "08:01:31" },
-        { "node_id": "TT19",    "scheduled_arrival_time": "08:01:34", "scheduled_departure_time": "08:01:34" },
-        { "node_id": "DRG_PF1", "scheduled_arrival_time": "08:01:37", "scheduled_departure_time": "08:01:40" },
-        { "node_id": "TT22",    "scheduled_arrival_time": "08:01:43", "scheduled_departure_time": "08:01:43" },
-        { "node_id": "TT24",    "scheduled_arrival_time": "08:01:46", "scheduled_departure_time": "08:01:46" },
-        { "node_id": "TT26",    "scheduled_arrival_time": "08:01:49", "scheduled_departure_time": "08:01:49" },
-        { "node_id": "TT27",    "scheduled_arrival_time": "08:01:52", "scheduled_departure_time": "08:01:52" },
-        { "node_id": "HWH_PF1", "scheduled_arrival_time": "08:01:55", "scheduled_departure_time": "08:01:58" }
+        {
+          "node_id": "HWH_PF1",
+          "scheduled_arrival_time": "07:59:22",
+          "scheduled_departure_time": "07:59:25"
+        },
+        {
+          "node_id": "TT27",
+          "scheduled_arrival_time": "07:59:28",
+          "scheduled_departure_time": "07:59:28"
+        },
+        {
+          "node_id": "TT26",
+          "scheduled_arrival_time": "07:59:31",
+          "scheduled_departure_time": "07:59:31"
+        },
+        {
+          "node_id": "TT24",
+          "scheduled_arrival_time": "07:59:34",
+          "scheduled_departure_time": "07:59:34"
+        },
+        {
+          "node_id": "TT22",
+          "scheduled_arrival_time": "07:59:37",
+          "scheduled_departure_time": "07:59:37"
+        },
+        {
+          "node_id": "DRG_PF1",
+          "scheduled_arrival_time": "07:59:40",
+          "scheduled_departure_time": "07:59:43"
+        },
+        {
+          "node_id": "TT19",
+          "scheduled_arrival_time": "07:59:46",
+          "scheduled_departure_time": "07:59:46"
+        },
+        {
+          "node_id": "RNJ_PF1",
+          "scheduled_arrival_time": "07:59:49",
+          "scheduled_departure_time": "07:59:52"
+        },
+        {
+          "node_id": "TT16",
+          "scheduled_arrival_time": "07:59:55",
+          "scheduled_departure_time": "07:59:55"
+        },
+        {
+          "node_id": "TT15",
+          "scheduled_arrival_time": "07:59:58",
+          "scheduled_departure_time": "07:59:58"
+        },
+        {
+          "node_id": "TT13",
+          "scheduled_arrival_time": "08:00:01",
+          "scheduled_departure_time": "08:00:01"
+        },
+        {
+          "node_id": "BGP_PF3",
+          "scheduled_arrival_time": "08:00:04",
+          "scheduled_departure_time": "08:00:07"
+        },
+        {
+          "node_id": "TT8",
+          "scheduled_arrival_time": "08:00:10",
+          "scheduled_departure_time": "08:00:10"
+        },
+        {
+          "node_id": "TT9",
+          "scheduled_arrival_time": "08:00:13",
+          "scheduled_departure_time": "08:00:13"
+        },
+        {
+          "node_id": "TT6",
+          "scheduled_arrival_time": "08:00:16",
+          "scheduled_departure_time": "08:00:16"
+        },
+        {
+          "node_id": "TT5",
+          "scheduled_arrival_time": "08:00:19",
+          "scheduled_departure_time": "08:00:19"
+        },
+        {
+          "node_id": "TT2",
+          "scheduled_arrival_time": "08:00:22",
+          "scheduled_departure_time": "08:00:22"
+        },
+        {
+          "node_id": "TT1",
+          "scheduled_arrival_time": "08:00:25",
+          "scheduled_departure_time": "08:00:25"
+        },
+        {
+          "node_id": "PAT_PF1",
+          "scheduled_arrival_time": "08:00:28",
+          "scheduled_departure_time": "08:00:31"
+        }
       ],
       "route_path": [
-        "PAT_PF3",
-        "TT3",
-        "TT5",
-        "TT6",
-        "TT9",
-        "TT8",
-        "TT7",
-        "TT10",
-        "TT11",
-        "BGP_PF1",
-        "TT12",
-        "TT14",
-        "TT17",
-        "RNJ_PF2",
-        "TT18",
-        "TT19",
-        "DRG_PF1",
-        "TT22",
-        "TT24",
-        "TT26",
+        "HWH_PF1",
         "TT27",
-        "HWH_PF1"
+        "TT26",
+        "TT24",
+        "TT22",
+        "DRG_PF1",
+        "TT19",
+        "RNJ_PF1",
+        "TT16",
+        "TT15",
+        "TT13",
+        "BGP_PF3",
+        "TT8",
+        "TT9",
+        "TT6",
+        "TT5",
+        "TT2",
+        "TT1",
+        "PAT_PF1"
+      ]
+    },
+    {
+      "train_no": "13011",
+      "name": "Reverse Path Express",
+      "priority": 5,
+      "max_speed_kph": 110,
+      "color": "#f39c12",
+      "mission_plan": [
+        {
+          "node_id": "HWH_PF4",
+          "scheduled_arrival_time": "08:03:00",
+          "scheduled_departure_time": "08:03:03"
+        },
+        {
+          "node_id": "TT24",
+          "scheduled_arrival_time": "08:03:06",
+          "scheduled_departure_time": "08:03:06"
+        },
+        {
+          "node_id": "TT22",
+          "scheduled_arrival_time": "08:03:08",
+          "scheduled_departure_time": "08:03:08"
+        },
+        {
+          "node_id": "TT19",
+          "scheduled_arrival_time": "08:03:11",
+          "scheduled_departure_time": "08:03:11"
+        },
+        {
+          "node_id": "TT18",
+          "scheduled_arrival_time": "08:03:15",
+          "scheduled_departure_time": "08:03:15"
+        },
+        {
+          "node_id": "RNJ_PF2",
+          "scheduled_arrival_time": "08:03:18",
+          "scheduled_departure_time": "08:03:21"
+        },
+        {
+          "node_id": "TT16",
+          "scheduled_arrival_time": "08:03:23",
+          "scheduled_departure_time": "08:03:23"
+        },
+        {
+          "node_id": "TT15",
+          "scheduled_arrival_time": "08:03:26",
+          "scheduled_departure_time": "08:03:26"
+        },
+        {
+          "node_id": "TT14",
+          "scheduled_arrival_time": "08:03:30",
+          "scheduled_departure_time": "08:03:30"
+        },
+        {
+          "node_id": "TT12",
+          "scheduled_arrival_time": "08:03:33",
+          "scheduled_departure_time": "08:03:33"
+        },
+        {
+          "node_id": "BGP_PF2",
+          "scheduled_arrival_time": "08:03:36",
+          "scheduled_departure_time": "08:03:38"
+        },
+        {
+          "node_id": "TT10",
+          "scheduled_arrival_time": "08:03:41",
+          "scheduled_departure_time": "08:03:41"
+        },
+        {
+          "node_id": "TT7",
+          "scheduled_arrival_time": "08:03:45",
+          "scheduled_departure_time": "08:03:45"
+        },
+        {
+          "node_id": "TT6",
+          "scheduled_arrival_time": "08:03:48",
+          "scheduled_departure_time": "08:03:48"
+        },
+        {
+          "node_id": "TT5",
+          "scheduled_arrival_time": "08:03:51",
+          "scheduled_departure_time": "08:03:51"
+        },
+        {
+          "node_id": "TT3",
+          "scheduled_arrival_time": "08:03:53",
+          "scheduled_departure_time": "08:03:53"
+        },
+        {
+          "node_id": "PAT_PF3",
+          "scheduled_arrival_time": "08:03:56",
+          "scheduled_departure_time": "08:04:00"
+        }
+      ],
+      "route_path": [
+        "HWH_PF4",
+        "TT24",
+        "TT22",
+        "TT19",
+        "TT18",
+        "RNJ_PF2",
+        "TT16",
+        "TT15",
+        "TT14",
+        "TT12",
+        "BGP_PF2",
+        "TT10",
+        "TT7",
+        "TT6",
+        "TT5",
+        "TT3",
+        "PAT_PF3"
       ]
     }
   ]
