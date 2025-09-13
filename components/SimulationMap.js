@@ -66,7 +66,7 @@ function getTrainPosition(train, nodes, edges) {
 
 
 
-export default function SimulationMap({ config, state, trainTrails }) {
+export default function SimulationMap({ config, state, trainTrails, className = "" }) {
   // Fullscreen state
   const [isFullscreen, setIsFullscreen] = useState(false);
   // --- Smooth interpolation state ---
@@ -320,7 +320,7 @@ export default function SimulationMap({ config, state, trainTrails }) {
   return (
     <div
       ref={containerRef}
-      className={`relative bg-gray-800 ${isFullscreen ? 'fixed inset-0 z-50 rounded-none' : 'w-full h-[800px] rounded-lg'} overflow-auto cursor-grab select-none`}
+  className={`relative bg-gray-800 ${isFullscreen ? 'fixed inset-0 z-50 rounded-none' : 'w-full h-[800px] rounded-lg'} overflow-hidden cursor-grab select-none hide-scrollbar ${className}`}
       style={isFullscreen ? { width: '100vw', height: '100vh', position: 'fixed', left: 0, top: 0 } : { width: '100%', height: '800px', position: 'relative' }}
       onMouseDown={handleMouseDown}
       onMouseMove={handleMouseMove}

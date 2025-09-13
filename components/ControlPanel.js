@@ -1,6 +1,9 @@
+
 "use client";
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import Link from 'next/link';
+
 
 
 export default function ControlPanel({ config, state, trainTrails, setTrainTrails, isRunning, start, pause, restart, onDelayInjected }) {
@@ -10,10 +13,37 @@ export default function ControlPanel({ config, state, trainTrails, setTrainTrail
   const [pendingTrain, setPendingTrain] = useState(null);
   const [pendingDelay, setPendingDelay] = useState(null);
 
+  // --- NEW HOOKS AND HELPERS FOR SCHEDULE EDITING ---
+  const nodeMap = React.useMemo(() => {
+    if (!config?.nodes) return {};
+    const map = {};
+    for (const node of config.nodes) map[node.id] = node;
+    return map;
+  }, [config]);
+
+  const [editingSchedule, setEditingSchedule] = useState(false);
+  const [editedSchedule, setEditedSchedule] = useState([]);
+
+  React.useEffect(() => {
+    if (pendingSuggestion && editingSchedule && pendingSuggestion.changes) {
+      setEditedSchedule(pendingSuggestion.changes.map(change => ({ ...change })));
+    }
+  }, [pendingSuggestion, editingSchedule]);
+
+  function getPlatformsForStation(station_id) {
+    return Object.values(nodeMap).filter(n => n.type === 'STATION_PLATFORM' && n.station_id === station_id);
+  }
+
+  function saveEditedSchedule() {
+    if (pendingSuggestion) {
+      pendingSuggestion.changes = editedSchedule;
+      setEditingSchedule(false);
+    }
+  }
+
   if (!config) return <div className="text-white p-4">Loading control panel...</div>;
 
   const trainList = config.train_roster || [];
-
 
   // Step 1: Preview delay changes
   const injectDelay = async (trainNo, delayMinutes) => {
@@ -94,48 +124,125 @@ export default function ControlPanel({ config, state, trainTrails, setTrainTrail
 
   return (
     <React.Fragment>
-      {/* Suggestion Modal */}
-      {pendingSuggestion && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60">
-          <div className="bg-white rounded-lg shadow-xl p-6 max-w-2xl w-full">
-            <h2 className="text-xl font-bold mb-4 text-gray-900">Schedule Change Suggestion</h2>
-            <div className="mb-4 text-gray-800">
-              <p className="mb-2">Proposed changes for delay of <b>{pendingDelay} min</b> on train <b>{pendingTrain}</b>:</p>
-              <div className="overflow-x-auto max-h-64">
-                <table className="w-full text-xs border">
+      {/* Suggestion Modal rendered in portal for true screen centering */}
+      {pendingSuggestion && typeof window !== 'undefined' && createPortal(
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-blue-900 via-green-900 to-blue-800 bg-opacity-90 transition-opacity p-8 sm:p-12 md:p-20">
+          <div
+            className="relative rounded-3xl shadow-2xl p-10 md:p-16 max-w-5xl w-full border-4 border-green-400 animate-fade-in flex flex-col"
+            style={{ background: 'linear-gradient(135deg, #e0f7fa 0%, #b2f7ef 100%)', minHeight: '60vh', minWidth: '60vw', maxHeight: '90vh', overflowY: 'auto' }}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-title"
+          >
+            <button
+              onClick={rejectSuggestion}
+              className="absolute top-5 right-6 text-green-500 hover:text-blue-700 text-3xl font-bold focus:outline-none"
+              aria-label="Close modal"
+            >
+              &times;
+            </button>
+            <h2 id="modal-title" className="text-3xl font-extrabold mb-6 text-blue-800 drop-shadow">Schedule Change Suggestion</h2>
+            <div className="mb-6 text-green-900">
+              <p className="mb-4 text-lg font-semibold text-blue-900">Proposed changes for delay of <b className='text-green-700'>{pendingDelay} min</b> on train <b className='text-blue-700'>{pendingTrain}</b>:</p>
+              <div className="mb-4 flex justify-end">
+                {!editingSchedule && (
+                  <button onClick={() => setEditingSchedule(true)} className="px-4 py-2 rounded bg-blue-500 hover:bg-blue-600 text-white font-semibold">Edit Schedule</button>
+                )}
+              </div>
+              <div className="overflow-x-auto max-h-96 rounded border-2 border-blue-300 bg-white/80 p-2">
+                <table className="w-full text-sm border">
                   <thead>
-                    <tr className="bg-gray-200">
-                      <th className="px-2 py-1">Train</th>
-                      <th className="px-2 py-1">Stop #</th>
-                      <th className="px-2 py-1">Original Arrival</th>
-                      <th className="px-2 py-1">New Arrival</th>
-                      <th className="px-2 py-1">Original Departure</th>
-                      <th className="px-2 py-1">New Departure</th>
-                      <th className="px-2 py-1">Reason</th>
+                    <tr className="bg-gradient-to-r from-blue-200 via-green-200 to-blue-100">
+                      <th className="px-3 py-2 text-blue-900 font-bold">Train No</th>
+                      <th className="px-3 py-2 text-blue-900 font-bold">Node</th>
+                      <th className="px-3 py-2 text-green-900 font-bold">Type</th>
+                      <th className="px-3 py-2 text-blue-700 font-bold">Original Arrival</th>
+                      <th className="px-3 py-2 text-green-700 font-bold">New Arrival</th>
+                      <th className="px-3 py-2 text-blue-700 font-bold">Original Departure</th>
+                      <th className="px-3 py-2 text-green-700 font-bold">New Departure</th>
+                      <th className="px-3 py-2 text-cyan-800 font-bold">Reason</th>
+                      {editingSchedule && <th className="px-3 py-2 text-cyan-800 font-bold">Edit</th>}
                     </tr>
                   </thead>
                   <tbody>
-                    {pendingSuggestion.changes.map((change, idx) => (
-                      <tr key={idx} className="border-b">
-                        <td className="px-2 py-1 font-semibold">{change.trainId}</td>
-                        <td className="px-2 py-1">{change.stopIndex + 1}</td>
-                        <td className="px-2 py-1 line-through text-red-500">{change.originalArrival}</td>
-                        <td className="px-2 py-1 text-green-700 font-bold">{change.newArrival}</td>
-                        <td className="px-2 py-1 line-through text-red-500">{change.originalDeparture}</td>
-                        <td className="px-2 py-1 text-green-700 font-bold">{change.newDeparture}</td>
-                        <td className="px-2 py-1 text-blue-600">{change.reason}</td>
-                      </tr>
-                    ))}
+                    {(editingSchedule ? editedSchedule : pendingSuggestion.changes).map((change, idx) => {
+                      // Always use change.nodeId for lookup
+                      const nodeId = change.nodeId || change.trainId || change.stopId;
+                      const node = nodeMap[nodeId] || {};
+                      const isPlatform = node.type === 'STATION_PLATFORM';
+                      const isTurn = node.type === 'TRACK_TURN';
+                      // Try to get train number for this row
+                      let trainNo = change.trainNo || change.train_no || change.trainId || pendingTrain || '';
+                      return (
+                        <tr key={idx} className="border-b">
+                          <td className="px-3 py-2 font-mono text-blue-900 font-bold">{trainNo}</td>
+                          <td className="px-3 py-2 font-semibold text-blue-900">{node.name || ''}</td>
+                          <td className="px-3 py-2 text-green-900">{node.type || ''}</td>
+                          <td className="px-3 py-2 line-through text-red-500">{change.originalArrival}</td>
+                          <td className="px-3 py-2 text-green-700 font-bold">
+                            {editingSchedule && (isTurn || node.type === 'TRACK' || node.type === 'TRACK_TURN') ? (
+                              <input
+                                type="time"
+                                value={change.newArrival?.slice(0,5) || ''}
+                                onChange={e => {
+                                  const val = e.target.value + ':00';
+                                  setEditedSchedule(sch => sch.map((c, i) => i === idx ? { ...c, newArrival: val } : c));
+                                }}
+                                className="px-2 py-1 rounded border border-blue-300 bg-white text-blue-900 w-24"
+                              />
+                            ) : change.newArrival}
+                          </td>
+                          <td className="px-3 py-2 line-through text-red-500">{change.originalDeparture}</td>
+                          <td className="px-3 py-2 text-green-700 font-bold">
+                            {editingSchedule && (isTurn || node.type === 'TRACK' || node.type === 'TRACK_TURN') ? (
+                              <input
+                                type="time"
+                                value={change.newDeparture?.slice(0,5) || ''}
+                                onChange={e => {
+                                  const val = e.target.value + ':00';
+                                  setEditedSchedule(sch => sch.map((c, i) => i === idx ? { ...c, newDeparture: val } : c));
+                                }}
+                                className="px-2 py-1 rounded border border-green-300 bg-white text-green-900 w-24"
+                              />
+                            ) : change.newDeparture}
+                          </td>
+                          <td className="px-3 py-2 text-cyan-800">{change.reason}</td>
+                          {editingSchedule && isPlatform && (
+                            <td className="px-3 py-2">
+                              <select
+                                value={change.nodeId}
+                                onChange={e => {
+                                  setEditedSchedule(sch => sch.map((c, i) => i === idx ? { ...c, nodeId: e.target.value } : c));
+                                }}
+                                className="px-2 py-1 rounded border border-blue-400 bg-white text-blue-900"
+                              >
+                                {getPlatformsForStation(node.station_id).map(pf => (
+                                  <option key={pf.id} value={pf.id}>{pf.name}</option>
+                                ))}
+                              </select>
+                            </td>
+                          )}
+                          {editingSchedule && !isPlatform && <td className="px-3 py-2"></td>}
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
               </div>
+              {editingSchedule && (
+                <div className="flex justify-end gap-4 mt-4">
+                  <button onClick={() => setEditingSchedule(false)} className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold">Cancel</button>
+                  <button onClick={saveEditedSchedule} className="px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white font-semibold">Save Changes</button>
+                </div>
+              )}
             </div>
-            <div className="flex justify-end gap-4 mt-4">
-              <button onClick={rejectSuggestion} className="px-4 py-2 rounded bg-gray-300 hover:bg-gray-400 text-gray-800 font-semibold">Reject</button>
-              <button onClick={acceptSuggestion} className="px-4 py-2 rounded bg-green-600 hover:bg-green-700 text-white font-semibold">Accept & Apply</button>
+            <div className="flex justify-end gap-6 mt-6">
+              <button onClick={rejectSuggestion} className="px-6 py-3 rounded-lg bg-gradient-to-r from-green-300 to-blue-300 hover:from-green-400 hover:to-blue-400 text-blue-900 font-bold shadow text-lg border-2 border-green-400">Reject</button>
+              <button onClick={acceptSuggestion} className="px-6 py-3 rounded-lg bg-gradient-to-r from-blue-500 to-green-500 hover:from-blue-600 hover:to-green-600 text-white font-bold shadow text-lg border-2 border-blue-400">Accept & Apply</button>
             </div>
           </div>
-        </div>
+        </div>,
+        window.document.body
       )}
 
       <div className="bg-gray-900/80 backdrop-blur-sm p-4 rounded-lg w-full h-full flex flex-col shadow-2xl">
@@ -214,9 +321,7 @@ export default function ControlPanel({ config, state, trainTrails, setTrainTrail
           );
         })}
         </div>
-        <Link href="/dashboard" className="text-center bg-indigo-600 text-white mt-4 px-4 py-2 rounded-lg shadow hover:bg-indigo-700 font-semibold transition-colors">
-            Back to Dashboard
-        </Link>
+        
       </div>
     </React.Fragment>
   );

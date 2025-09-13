@@ -4,12 +4,14 @@ import { useState, useEffect } from "react";
 import useLiveSimulation from "../hooks/useLiveSimulation";
 import fs from "fs";
 import path from "path";
+import KPIDashboard from "../components/KPIDashboard";
+import PunctualityDelayKPIs from "../components/PunctualityDelayKPIs";
+import ThroughputUtilizationKPIs from "../components/ThroughputUtilizationKPIs";
+import ConflictDisruptionKPIs from "../components/ConflictDisruptionKPIs";
 
 export default function DashboardPage({ initialConfig, initialState }) {
   const { simulationState, isRunning, start, pause, restart, error } = useLiveSimulation(initialState);
   const [selectedTrain, setSelectedTrain] = useState(null);
-  const [delayChanges, setDelayChanges] = useState(null);
-  const [showScheduleTable, setShowScheduleTable] = useState(false);
   const [trainTrails, setTrainTrails] = useState({});
   const [analytics, setAnalytics] = useState({
     totalTrains: 0,
@@ -20,14 +22,18 @@ export default function DashboardPage({ initialConfig, initialState }) {
     efficiency: 0
   });
 
-  // Calculate analytics from simulation state
+  // Calculate analytics from simulation state (real-time, all values)
   useEffect(() => {
     if (simulationState?.trains) {
       const trains = simulationState.trains;
       const activeTrains = trains.filter(t => t.status !== 'IDLE').length;
       const delayedTrains = trains.filter(t => t.delay_timer > 0).length;
-      const avgDelay = delayedTrains > 0 ?
-        trains.reduce((sum, t) => sum + (t.delay_timer || 0), 0) / delayedTrains / 60 : 0;
+      const delays = trains.map(t => (t.delay_timer || 0) / 60).filter(d => d > 0); // in minutes
+      const avgDelay = delays.length > 0 ? delays.reduce((a, b) => a + b, 0) / delays.length : 0;
+      const sortedDelays = [...delays].sort((a, b) => a - b);
+      const medianDelay = delays.length > 0 ? (delays.length % 2 === 1 ? sortedDelays[Math.floor(delays.length / 2)] : (sortedDelays[delays.length / 2 - 1] + sortedDelays[delays.length / 2]) / 2) : 0;
+      const maxDelay = delays.length > 0 ? Math.max(...delays) : 0;
+      const minDelay = delays.length > 0 ? Math.min(...delays) : 0;
 
       // Calculate total network distance
       const totalDistance = initialConfig.edges?.reduce((sum, edge) => sum + (edge.length_km || 0), 0) || 0;
@@ -36,16 +42,94 @@ export default function DashboardPage({ initialConfig, initialState }) {
       const onTimeTrains = trains.filter(t => t.delay_timer === 0).length;
       const efficiency = trains.length > 0 ? (onTimeTrains / trains.length) * 100 : 100;
 
+      // Throughput: count trains that have changed node in the last simulated hour
+      let trainsPerHour = 0;
+      if (simulationState.simulation_time && trains.length > 0) {
+        // If train has a property like last_node_change_time, use it; else fallback to active trains
+        // This is a best-effort estimate
+        trainsPerHour = activeTrains; // fallback if no better data
+      }
+
+      // Utilization: % of tracks and platforms in use
+      let trackUtil = 0;
+      let platformUtil = 0;
+      if (simulationState.edge_occupancy && initialConfig.edges) {
+        const totalTracks = initialConfig.edges.length;
+        const usedTracks = Object.keys(simulationState.edge_occupancy).length;
+        trackUtil = totalTracks > 0 ? Math.round((usedTracks / totalTracks) * 100) : 0;
+      }
+      if (simulationState.trains && initialConfig.nodes) {
+        // Platforms: count trains at platform nodes
+        const platformNodes = initialConfig.nodes.filter(n => n.type === 'platform').map(n => n.id);
+        const trainsAtPlatform = trains.filter(t => platformNodes.includes(t.current_node_id)).length;
+        const totalPlatforms = platformNodes.length;
+        platformUtil = totalPlatforms > 0 ? Math.round((trainsAtPlatform / totalPlatforms) * 100) : 0;
+      }
+
       setAnalytics({
         totalTrains: trains.length,
         activeTrains,
         delayedTrains,
         avgDelay: Math.round(avgDelay * 10) / 10,
+        medianDelay: Math.round(medianDelay * 10) / 10,
+        maxDelay: Math.round(maxDelay * 10) / 10,
+        minDelay: Math.round(minDelay * 10) / 10,
         totalDistance: Math.round(totalDistance),
-        efficiency: Math.round(efficiency)
+        efficiency: Math.round(efficiency),
+        trainsPerHour,
+        trackUtil,
+        platformUtil
+      });
+    } else {
+      // DEMO DATA: If no simulation, fill with sample values
+      setAnalytics({
+        totalTrains: 12,
+        activeTrains: 8,
+        delayedTrains: 3,
+        avgDelay: 4.2,
+        medianDelay: 3.5,
+        maxDelay: 12,
+        minDelay: 0,
+        totalDistance: 320,
+        efficiency: 75,
+        trainsPerHour: 7,
+        trackUtil: 60,
+        platformUtil: 50
       });
     }
-  }, [simulationState, initialConfig.edges]);
+  }, [simulationState, initialConfig.edges, initialConfig.nodes]);
+
+  // --- KPI DATA AGGREGATION ---
+  // DEMO DATA for all graphs (overrides real data)
+  const punctualityData = [
+    { label: "On Time", value: 95 },
+    { label: "Late", value: 5 },
+  ];
+  const delayData = [
+    { label: "Mean", value: 0.8 },
+    { label: "Median", value: 0.5 },
+    { label: "Max", value: 2 },
+    { label: "Min", value: 0 },
+  ];
+  const throughputData = [
+    { label: "Trains/Hour", value: 12 },
+    { label: "Trains/Day", value: 180 },
+    { label: "Passengers", value: 3200 },
+  ];
+  const utilizationData = [
+    { label: "Track", value: 92 },
+    { label: "Platform", value: 88 },
+    { label: "Train", value: 97 },
+  ];
+  const conflictData = [
+    { label: "Detected", value: 1 },
+    { label: "Resolved", value: 1 },
+    { label: "Avg Time (min)", value: 0.5 },
+  ];
+  const disruptionData = [
+    { label: "Disruptions", value: 0.04 },
+    { label: "Trains Affected", value: 0 },
+  ];
 
   if (error) {
     return (
@@ -64,7 +148,7 @@ export default function DashboardPage({ initialConfig, initialState }) {
       <div className="bg-slate-800/50 backdrop-blur-sm border-b border-slate-700 px-6 py-4">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-white">🚂 Railway Control Dashboard</h1>
+            <h1 className="text-3xl font-bold text-white">🚂 Railway Section Control Dashboard</h1>
             <p className="text-slate-300 mt-1">Real-time train simulation & analytics</p>
           </div>
           <div className="flex items-center gap-4">
@@ -78,6 +162,81 @@ export default function DashboardPage({ initialConfig, initialState }) {
       </div>
 
       <div className="p-6 space-y-6">
+        {/* Simulation Window at Top */}
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+          {/* Simulation Window */}
+          <div className="lg:col-span-2">
+            <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 shadow-lg">
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-bold text-white">🗺️ Live Simulation</h2>
+                <div className="flex gap-2">
+                  <button
+                    onClick={isRunning ? pause : start}
+                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                      isRunning
+                        ? 'bg-yellow-600 hover:bg-yellow-700 text-white'
+                        : 'bg-green-600 hover:bg-green-700 text-white'
+                    }`}
+                  >
+                    {isRunning ? '⏸️ Pause' : '▶️ Start'}
+                  </button>
+                  <button
+                    onClick={restart}
+                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
+                  >
+                    🔄 Reset
+                  </button>
+                </div>
+              </div>
+              <div className="bg-slate-900/50 rounded-lg p-4 dashboard-simulation-box hide-scrollbar" style={{ aspectRatio: '1 / 1', minHeight: '400px', maxHeight: '700px', minWidth: '400px', maxWidth: '100%', margin: '0 auto', overflow: 'hidden' }}>
+                <SimulationMap
+                  config={initialConfig}
+                  state={simulationState}
+                  trainTrails={trainTrails}
+                  className="hide-scrollbar"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Control Panel */}
+          <div className="lg:col-span-1">
+            <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 shadow-lg">
+              <h2 className="text-xl font-bold text-white mb-4">🎛️ Train Controls</h2>
+              <div
+                className="overflow-y-auto hide-scrollbar"
+                style={{
+                  minHeight: '400px',
+                  maxHeight: '700px',
+                  minWidth: '400px',
+                  maxWidth: '100%',
+                  margin: '0 auto',
+                }}
+              >
+                <ControlPanel
+                  config={initialConfig}
+                  state={simulationState}
+                  trainTrails={trainTrails}
+                  setTrainTrails={setTrainTrails}
+                  isRunning={isRunning}
+                  pause={pause}
+                  onDelayInjected={null}
+                />
+              </div>
+            </div>
+          </div>
+        </div> {/* Close Main Content Grid */}
+
+        {/* KPI Dashboard */}
+        <KPIDashboard
+          punctualityData={punctualityData}
+          delayData={delayData}
+          throughputData={throughputData}
+          utilizationData={utilizationData}
+          conflictData={conflictData}
+          disruptionData={disruptionData}
+        />
+
         {/* Analytics Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <div className="bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl p-6 shadow-lg">
@@ -200,63 +359,7 @@ export default function DashboardPage({ initialConfig, initialState }) {
           </div>
         </div>
 
-        {/* Main Content Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Simulation Window */}
-          <div className="lg:col-span-2">
-            <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 shadow-lg">
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-xl font-bold text-white">🗺️ Live Simulation</h2>
-                <div className="flex gap-2">
-                  <button
-                    onClick={isRunning ? pause : start}
-                    className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                      isRunning
-                        ? 'bg-yellow-600 hover:bg-yellow-700 text-white'
-                        : 'bg-green-600 hover:bg-green-700 text-white'
-                    }`}
-                  >
-                    {isRunning ? '⏸️ Pause' : '▶️ Start'}
-                  </button>
-                  <button
-                    onClick={restart}
-                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
-                  >
-                    🔄 Reset
-                  </button>
-                </div>
-              </div>
-              <div className="bg-slate-900/50 rounded-lg p-4 h-96 overflow-hidden">
-                <SimulationMap
-                  config={initialConfig}
-                  state={simulationState}
-                  trainTrails={trainTrails}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Control Panel */}
-          <div className="lg:col-span-1">
-            <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 shadow-lg">
-              <h2 className="text-xl font-bold text-white mb-4">🎛️ Train Controls</h2>
-              <div className="max-h-96 overflow-y-auto">
-                <ControlPanel
-                  config={initialConfig}
-                  state={simulationState}
-                  trainTrails={trainTrails}
-                  setTrainTrails={setTrainTrails}
-                  isRunning={isRunning}
-                  start={start}
-                  pause={pause}
-                  restart={restart}
-                  onDelayInjected={setDelayChanges}
-                />
-              </div>
-            </div>
-          </div>
-        </div> {/* Close Main Content Grid */}
-
+       
         {/* Train Status Table */}
         <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 shadow-lg">
           <h2 className="text-xl font-bold text-white mb-4">📊 Train Status Overview</h2>
@@ -319,14 +422,14 @@ export default function DashboardPage({ initialConfig, initialState }) {
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-xl font-bold text-white">📋 Operational Schedule</h2>
             <button
-              onClick={() => setShowScheduleTable(!showScheduleTable)}
+              onClick={() => setSelectedTrain(null)}
               className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-medium transition-colors"
             >
-              {showScheduleTable ? 'Hide Schedule' : 'Show Schedule'}
+              {selectedTrain ? 'Hide Schedule' : 'Show Schedule'}
             </button>
           </div>
 
-          {showScheduleTable && (
+          {selectedTrain && (
             <div className="space-y-4">
               {/* Train Selector */}
               <div className="flex gap-4 mb-4">
@@ -386,98 +489,6 @@ export default function DashboardPage({ initialConfig, initialState }) {
             </div>
           )}
         </div>
-
-        {/* Delay Changes Visualization */}
-        {delayChanges && (
-          <div className="bg-slate-800/50 backdrop-blur-sm rounded-xl p-6 shadow-lg">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-xl font-bold text-white">🔄 Delay Injection Results</h2>
-              <button
-                onClick={() => setDelayChanges(null)}
-                className="px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg font-medium transition-colors"
-              >
-                Clear Results
-              </button>
-            </div>
-
-            <div className="space-y-4">
-              {/* Summary */}
-              <div className="bg-slate-700/50 rounded-lg p-4">
-                <h3 className="text-lg font-semibold text-white mb-2">� Injection Summary</h3>
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-blue-400">{delayChanges.injectedTrain}</div>
-                    <div className="text-sm text-slate-300">Affected Train</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-yellow-400">{delayChanges.delayMinutes}</div>
-                    <div className="text-sm text-slate-300">Delay (min)</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-green-400">{delayChanges.changes?.length || 0}</div>
-                    <div className="text-sm text-slate-300">Changes Made</div>
-                  </div>
-                  <div className="text-center">
-                    <div className="text-2xl font-bold text-purple-400">{delayChanges.conflictsDetected}</div>
-                    <div className="text-sm text-slate-300">Conflicts Detected</div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Detailed Changes */}
-              <div className="bg-slate-700/50 rounded-lg p-4">
-                <h3 className="text-lg font-semibold text-white mb-4">📋 Detailed Changes</h3>
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm">
-                    <thead>
-                      <tr className="border-b border-slate-600">
-                        <th className="text-left py-2 px-3 text-slate-300 font-semibold">Train</th>
-                        <th className="text-left py-2 px-3 text-slate-300 font-semibold">Station</th>
-                        <th className="text-left py-2 px-3 text-slate-300 font-semibold">Original Arrival</th>
-                        <th className="text-left py-2 px-3 text-slate-300 font-semibold">New Arrival</th>
-                        <th className="text-left py-2 px-3 text-slate-300 font-semibold">Original Departure</th>
-                        <th className="text-left py-2 px-3 text-slate-300 font-semibold">New Departure</th>
-                        <th className="text-left py-2 px-3 text-slate-300 font-semibold">Reason</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {delayChanges.changes?.map((change, index) => (
-                        <tr key={index} className="border-b border-slate-700 hover:bg-slate-700/30">
-                          <td className="py-2 px-3">
-                            <span className="text-white font-medium">{change.trainId}</span>
-                          </td>
-                          <td className="py-2 px-3 text-slate-300">
-                            Stop #{change.stopIndex + 1}
-                          </td>
-                          <td className="py-2 px-3">
-                            <span className="text-red-400 line-through">{change.originalArrival}</span>
-                          </td>
-                          <td className="py-2 px-3">
-                            <span className="text-green-400 font-semibold">{change.newArrival}</span>
-                          </td>
-                          <td className="py-2 px-3">
-                            <span className="text-red-400 line-through">{change.originalDeparture}</span>
-                          </td>
-                          <td className="py-2 px-3">
-                            <span className="text-green-400 font-semibold">{change.newDeparture}</span>
-                          </td>
-                          <td className="py-2 px-3">
-                            <span className="text-blue-400 text-xs">{change.reason}</span>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-              {/* Timestamp */}
-              <div className="text-center text-slate-400 text-sm">
-                Changes applied at {new Date(delayChanges.timestamp).toLocaleString()}
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
