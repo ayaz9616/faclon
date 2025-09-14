@@ -248,19 +248,22 @@ export default function SimulationMap({ config, state, trainTrails, className = 
     // Get bounding box
     const xs = platformNodes.map(n => n.position?.x ?? 0);
     const ys = platformNodes.map(n => n.position?.y ?? 0);
-    const minX = Math.min(...xs) - 20;
-    const maxX = Math.max(...xs) + 20;
-    const minY = Math.min(...ys) - 20;
-    const maxY = Math.max(...ys) + 20;
+    const minX = Math.min(...xs) - 50;
+    const maxX = Math.max(...xs) + 50;
+    const minY = Math.min(...ys) - 100;
+    const maxY = Math.max(...ys) + 50;
     const stationName = platformNodes[0].station_name || stationId;
     return (
-      <div
+      <div>
+         <div
         key={`station-rect-${stationId}`}
         className="absolute border-4 border-blue-300 bg-blue-200 bg-opacity-10 rounded-xl"
         style={{ left: minX, top: minY, width: maxX - minX, height: maxY - minY, zIndex: 1 }}
       >
         <div className="absolute left-2 top-2 text-blue-700 text-xs font-bold bg-white bg-opacity-80 rounded px-2 py-1 shadow">{stationName}</div>
       </div>
+      </div>
+     
     );
   });
 

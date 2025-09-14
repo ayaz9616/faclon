@@ -253,10 +253,7 @@ export default function ControlPanel({ config, state, trainTrails, setTrainTrail
       <div className="flex gap-2 mb-4">
         {isRunning ? (
           <button className="flex-1 px-3 py-2 rounded bg-yellow-500 text-white hover:bg-yellow-600 transition-colors" onClick={pause}>Pause</button>
-        ) : (
-          <button className="flex-1 px-3 py-2 rounded bg-green-500 text-white hover:bg-green-600 transition-colors" onClick={start}>Play</button>
-        )}
-        <button className="flex-1 px-3 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors" onClick={restart}>Reset</button>
+        ) : null}
       </div>
       <div className="space-y-4 overflow-y-auto flex-1 pr-2">
         {trainList.map(trainConfig => {
