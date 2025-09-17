@@ -538,7 +538,12 @@ export default function SimulationMap({ config, state, trainTrails, className = 
               }
             }
           }
-          return trailSegments;
+          // Add a key to the fragment returned for each train
+          return (
+            <React.Fragment key={train.train_no}>
+              {trailSegments}
+            </React.Fragment>
+          );
         })}
       </div>
     </div>
