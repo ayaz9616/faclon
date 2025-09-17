@@ -1,0 +1,273 @@
+{
+  "name": "Train Rerouting",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        304,
+        -32
+      ],
+      "id": "2b14a2f3-b515-467a-8dc4-7e149140acee",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "content": "## Train rerouting on the behalf of priority , current track , platform traffic of the train ,  it will minimise train delay increase throughput, track damage, blocked track  ",
+        "height": 336,
+        "width": 336,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1824,
+        -80
+      ],
+      "typeVersion": 1,
+      "id": "ee9239fb-7134-4262-8007-4b6aee32e4f8",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "binaryPropertyName": "network_definition",
+        "destinationKey": "network_definition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        1008,
+        -48
+      ],
+      "id": "26435608-0297-47c0-a8ad-173aa5414f00",
+      "name": "Network_defiction"
+    },
+    {
+      "parameters": {
+        "fileSelector": "C:/Users/gupta/OneDrive/Desktop/New folder/SIH/network_definition.json",
+        "options": {
+          "fileName": "network_definition.json",
+          "dataPropertyName": "network_definition"
+        }
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        832,
+        128
+      ],
+      "id": "347c240f-46ed-4804-8db1-f0e3dd39cbd1",
+      "name": "network_definition file"
+    },
+    {
+      "parameters": {
+        "fileSelector": "C:/Users/gupta/OneDrive/Desktop/New folder/SIH/operational_schedule.json",
+        "options": {
+          "fileName": "operational_schedule.json",
+          "dataPropertyName": "operational_schedule"
+        }
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        480,
+        144
+      ],
+      "id": "7a390562-53ae-4844-9545-5e3f5937a5a5",
+      "name": "operational_schedule"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-pro",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-pro"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=Query : {{ $('When Executed by Another Workflow').item.json.query }}\n\nYou are a Train Section Controller Expert.  \nYou have deep knowledge of railway platforms, tracks, and routing of a particular section as provided to you in JSON base64 data.  \n\nYou will receive two input files:  \n1. operational_schedule.json → includes dynamic details of all trains such as arrival and departure times at each platform (node), their mission plan, route path, and train priority.  \n   File: {{ $('operational_schedule1').item.json.operational_schedule }}  \n\n2. network_definition.json → includes static details of the track layout, platforms, nodes, and edges of the section.  \n   File: {{ $json.network_definition }}  \n\nTask:  \n- You will receive a query, a delay trigger, or an incident report.  \n- If the query only asks for information, read both files and provide the exact answer in **ONE SINGLE LINE**.  \n- If the query is a delay trigger (e.g., \"Train X delayed by Y minutes\"), update the train timings and reroute if needed.  \n- If the query is an incident (e.g., track damage, blocked track, bad weather), recalculate the routing by avoiding unavailable sections and reallocating platforms or tracks.  \n- Support **what-if simulation and scenario analysis** to evaluate alternative routings, holding strategies, and platform allocations before providing the final output.  \n\nDecision Rules:  \n- Higher priority trains (larger priority number) must not be delayed due to lower priority trains.  \n- Suggest alternate paths, waiting strategies, or platforms if required.  \n- Ensure no two trains occupy the same platform/track at the same time.  \n- Always optimize for **minimum disruption** while maintaining safety and feasibility.  \n\nOutput:  \n- For normal queries → return **one single-line response**.  \n- For delay or incident handling → return the **updated `network_definition.json`** with modified paths and timings.  \n- For what-if or scenario queries → return the **most optimal rerouting/holding plan** in JSON or single line depending on the question.  \n"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        1216,
+        160
+      ],
+      "id": "b7730a03-97d1-42a4-8d82-34dcfbd5349c",
+      "name": "Message a model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "Ln2N9lobtFj0pjVg",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:5000/receive",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.content.parts[0].text.slice(8 ,-3) }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "updated operational file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1504,
+        -48
+      ],
+      "id": "ac8ea7d6-9e48-41e5-9a7c-b28e8b628425",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "binaryPropertyName": "operational_schedule",
+        "destinationKey": "operational_schedule",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        672,
+        -32
+      ],
+      "id": "cc2dd4bf-dd38-4520-8ce0-6f4d7422ec36",
+      "name": "operational_schedule1"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "query": "Train 13006 has been delayed by 5 minutes, suggest rerout"
+        }
+      }
+    ],
+    "Message a model1": [
+      {
+        "json": {
+          "content": {
+            "parts": [
+              {
+                "text": "```json\n{\n  \"simulation_parameters\": {\n    \"start_time\": \"08:00:00\",\n    \"time_scale_factor\": 1\n  },\n  \"train_roster\": [\n    {\n      \"train_no\": \"13006\",\n      \"name\": \"Amritsar Mail\",\n      \"priority\": 9,\n      \"max_speed_kph\": 110,\n      \"color\": \"#27ae60\",\n      \"mission_plan\": [\n        {\n          \"node_id\": \"PAT_PF3\",\n          \"scheduled_arrival_time\": \"08:06:00\",\n          \"scheduled_departure_time\": \"08:07:00\"\n        },\n        {\n          \"node_id\": \"TT3\",\n          \"scheduled_arrival_time\": \"08:08:06\",\n          \"scheduled_departure_time\": \"08:09:06\"\n        },\n        {\n          \"node_id\": \"TT5\",\n          \"scheduled_arrival_time\": \"08:10:07\",\n          \"scheduled_departure_time\": \"08:11:07\"\n        },\n        {\n          \"node_id\": \"TT6\",\n          \"scheduled_arrival_time\": \"08:12:00\",\n          \"scheduled_departure_time\": \"08:13:00\"\n        },\n        {\n          \"node_id\": \"TT7\",\n          \"scheduled_arrival_time\": \"08:18:21\",\n          \"scheduled_departure_time\": \"08:19:21\"\n        },\n        {\n          \"node_id\": \"TT10\",\n          \"scheduled_arrival_time\": \"08:20:22\",\n          \"scheduled_departure_time\": \"08:21:22\"\n        },\n        {\n          \"node_id\": \"TT11\",\n          \"scheduled_arrival_time\": \"08:15:26\",\n          \"scheduled_departure_time\": \"08:15:26\"\n        },\n        {\n          \"node_id\": \"BGP_PF1\",\n          \"scheduled_arrival_time\": \"08:15:30\",\n          \"scheduled_departure_time\": \"08:15:33\"\n        },\n        {\n          \"node_id\": \"TT12\",\n          \"scheduled_arrival_time\": \"08:15:36\",\n          \"scheduled_departure_time\": \"08:15:36\"\n        },\n        {\n          \"node_id\": \"TT14\",\n          \"scheduled_arrival_time\": \"08:15:37\",\n          \"scheduled_departure_time\": \"08:15:37\"\n        },\n        {\n          \"node_id\": \"TT17\",\n          \"scheduled_arrival_time\": \"08:15:41\",\n          \"scheduled_departure_time\": \"08:15:41\"\n        },\n        {\n          \"node_id\": \"RNJ_PF2\",\n          \"scheduled_arrival_time\": \"08:15:45\",\n          \"scheduled_departure_time\": \"08:15:48\"\n        },\n        {\n          \"node_id\": \"TT18\",\n          \"scheduled_arrival_time\": \"08:15:51\",\n          \"scheduled_departure_time\": \"08:15:51\"\n        },\n        {\n          \"node_id\": \"TT20\",\n          \"scheduled_arrival_time\": \"08:15:52\",\n          \"scheduled_departure_time\": \"08:15:52\"\n        },\n        {\n          \"node_id\": \"TT21\",\n          \"scheduled_arrival_time\": \"08:15:56\",\n          \"scheduled_departure_time\": \"08:15:56\"\n        },\n        {\n          \"node_id\": \"DRG_PF1\",\n          \"scheduled_arrival_time\": \"08:16:00\",\n          \"scheduled_departure_time\": \"08:16:03\"\n        },\n        {\n          \"node_id\": \"TT22\",\n          \"scheduled_arrival_time\": \"08:16:06\",\n          \"scheduled_departure_time\": \"08:16:06\"\n        },\n        {\n          \"node_id\": \"TT24\",\n          \"scheduled_arrival_time\": \"08:16:07\",\n          \"scheduled_departure_time\": \"08:16:07\"\n        },\n        {\n          \"node_id\": \"TT26\",\n          \"scheduled_arrival_time\": \"08:16:11\",\n          \"scheduled_departure_time\": \"08:16:11\"\n        },\n        {\n          \"node_id\": \"TT27\",\n          \"scheduled_arrival_time\": \"08:16:15\",\n          \"scheduled_departure_time\": \"08:16:15\"\n        },\n        {\n          \"node_id\": \"HWH_PF1\",\n          \"scheduled_arrival_time\": \"08:16:18\",\n          \"scheduled_departure_time\": \"08:16:21\"\n        }\n      ],\n      \"route_path\": [\n        \"PAT_PF3\",\n        \"TT3\",\n        \"TT5\",\n        \"TT6\",\n        \"TT7\",\n        \"TT10\",\n        \"TT11\",\n        \"BGP_PF1\",\n        \"TT12\",\n        \"TT14\",\n        \"TT17\",\n        \"RNJ_PF2\",\n        \"TT18\",\n        \"TT20\",\n        \"TT21\",\n        \"DRG_PF1\",\n        \"TT22\",\n        \"TT24\",\n        \"TT26\",\n        \"TT27\",\n        \"HWH_PF1\"\n      ]\n    },\n    {\n      \"train_no\": \"13007\",\n      \"name\": \"Howrah Express\",\n      \"priority\": 8,\n      \"max_speed_kph\": 110,\n      \"color\": \"#2980b9\",\n      \"mission_plan\": [\n        {\n          \"node_id\": \"PAT_PF1\",\n          \"scheduled_arrival_time\": \"08:02:00\",\n          \"scheduled_departure_time\": \"08:02:03\"\n        },\n        {\n          \"node_id\": \"TT1\",\n          \"scheduled_arrival_time\": \"08:02:07\",\n          \"scheduled_departure_time\": \"08:02:07\"\n        },\n        {\n          \"node_id\": \"TT2\",\n          \"scheduled_arrival_time\": \"08:02:10\",\n          \"scheduled_departure_time\": \"08:02:10\"\n        },\n        {\n          \"node_id\": \"TT5\",\n          \"scheduled_arrival_time\": \"08:02:11\",\n          \"scheduled_departure_time\": \"08:02:11\"\n        },\n        {\n          \"node_id\": \"TT6\",\n          \"scheduled_arrival_time\": \"08:02:15\",\n          \"scheduled_departure_time\": \"08:02:15\"\n        },\n        {\n          \"node_id\": \"TT9\",\n          \"scheduled_arrival_time\": \"08:15:18\",\n          \"scheduled_departure_time\": \"08:15:18\"\n        },\n        {\n          \"node_id\": \"TT8\",\n          \"scheduled_arrival_time\": \"08:15:22\",\n          \"scheduled_departure_time\": \"08:15:22\"\n        },\n        {\n          \"node_id\": \"BGP_PF3\",\n          \"scheduled_arrival_time\": \"08:15:25\",\n          \"scheduled_departure_time\": \"08:15:26\"\n        },\n        {\n          \"node_id\": \"TT13\",\n          \"scheduled_arrival_time\": \"08:15:30\",\n          \"scheduled_departure_time\": \"08:15:30\"\n        },\n        {\n          \"node_id\": \"TT15\",\n          \"scheduled_arrival_time\": \"08:15:33\",\n          \"scheduled_departure_time\": \"08:15:33\"\n        },\n        {\n          \"node_id\": \"TT16\",\n          \"scheduled_arrival_time\": \"08:15:37\",\n          \"scheduled_departure_time\": \"08:15:37\"\n        },\n        {\n          \"node_id\": \"RNJ_PF1\",\n          \"scheduled_arrival_time\": \"08:15:40\",\n          \"scheduled_departure_time\": \"08:15:41\"\n        },\n        {\n          \"node_id\": \"TT19\",\n          \"scheduled_arrival_time\": \"08:15:45\",\n          \"scheduled_departure_time\": \"08:15:45\"\n        },\n        {\n          \"node_id\": \"DRG_PF1\",\n          \"scheduled_arrival_time\": \"08:15:48\",\n          \"scheduled_departure_time\": \"08:15:52\"\n        },\n        {\n          \"node_id\": \"TT22\",\n          \"scheduled_arrival_time\": \"08:18:55\",\n          \"scheduled_departure_time\": \"08:18:55\"\n        },\n        {\n          \"node_id\": \"TT24\",\n          \"scheduled_arrival_time\": \"08:18:56\",\n          \"scheduled_departure_time\": \"08:18:56\"\n        },\n        {\n          \"node_id\": \"TT26\",\n          \"scheduled_arrival_time\": \"08:19:00\",\n          \"scheduled_departure_time\": \"08:19:00\"\n        },\n        {\n          \"node_id\": \"TT27\",\n          \"scheduled_arrival_time\": \"08:19:03\",\n          \"scheduled_departure_time\": \"08:19:03\"\n        },\n        {\n          \"node_id\": \"HWH_PF1\",\n          \"scheduled_arrival_time\": \"08:19:07\",\n          \"scheduled_departure_time\": \"08:19:10\"\n        }\n      ],\n      \"route_path\": [\n        \"PAT_PF1\",\n        \"TT1\",\n        \"TT2\",\n        \"TT5\",\n        \"TT6\",\n        \"TT9\",\n        \"TT8\",\n        \"BGP_PF3\",\n        \"TT13\",\n        \"TT15\",\n        \"TT16\",\n        \"RNJ_PF1\",\n        \"TT19\",\n        \"DRG_PF1\",\n        \"TT22\",\n        \"TT24\",\n        \"TT26\",\n        \"TT27\",\n        \"HWH_PF1\"\n      ]\n    },\n    {\n      \"train_no\": \"13008\",\n      \"name\": \"Patna Superfast\",\n      \"priority\": 7,\n      \"max_speed_kph\": 110,\n      \"color\": \"#e67e22\",\n      \"mission_plan\": [\n        {\n          \"node_id\": \"PAT_PF4\",\n          \"scheduled_arrival_time\": \"08:02:02\",\n          \"scheduled_departure_time\": \"08:02:03\"\n        },\n        {\n          \"node_id\": \"TT4\",\n          \"scheduled_arrival_time\": \"08:02:07\",\n          \"scheduled_departure_time\": \"08:02:07\"\n        },\n        {\n          \"node_id\": \"TT9\",\n          \"scheduled_arrival_time\": \"08:02:11\",\n          \"scheduled_departure_time\": \"08:02:11\"\n        },\n        {\n          \"node_id\": \"TT8\",\n          \"scheduled_arrival_time\": \"08:19:14\",\n          \"scheduled_departure_time\": \"08:19:14\"\n        },\n        {\n          \"node_id\": \"BGP_PF3\",\n          \"scheduled_arrival_time\": \"08:19:17\",\n          \"scheduled_departure_time\": \"08:19:18\"\n        },\n        {\n          \"node_id\": \"TT13\",\n          \"scheduled_arrival_time\": \"08:19:22\",\n          \"scheduled_departure_time\": \"08:19:22\"\n        },\n        {\n          \"node_id\": \"TT15\",\n          \"scheduled_arrival_time\": \"08:19:26\",\n          \"scheduled_departure_time\": \"08:19:26\"\n        },\n        {\n          \"node_id\": \"TT14\",\n          \"scheduled_arrival_time\": \"08:19:29\",\n          \"scheduled_departure_time\": \"08:19:29\"\n        },\n        {\n          \"node_id\": \"TT17\",\n          \"scheduled_arrival_time\": \"08:19:32\",\n          \"scheduled_departure_time\": \"08:19:32\"\n        },\n        {\n          \"node_id\": \"RNJ_PF4\",\n          \"scheduled_arrival_time\": \"08:19:33\",\n          \"scheduled_departure_time\": \"08:19:37\"\n        },\n        {\n          \"node_id\": \"TT20\",\n          \"scheduled_arrival_time\": \"08:19:41\",\n          \"scheduled_departure_time\": \"08:19:41\"\n        },\n        {\n          \"node_id\": \"TT21\",\n          \"scheduled_arrival_time\": \"08:19:44\",\n          \"scheduled_departure_time\": \"08:19:44\"\n        },\n        {\n          \"node_id\": \"DRG_PF2\",\n          \"scheduled_arrival_time\": \"08:19:47\",\n          \"scheduled_departure_time\": \"08:19:48\"\n        },\n        {\n          \"node_id\": \"TT23\",\n          \"scheduled_arrival_time\": \"08:19:52\",\n          \"scheduled_departure_time\": \"08:19:52\"\n        },\n        {\n          \"node_id\": \"TT25\",\n          \"scheduled_arrival_time\": \"08:19:56\",\n          \"scheduled_departure_time\": \"08:19:56\"\n        },\n        {\n          \"node_id\": \"HWH_PF5\",\n          \"scheduled_arrival_time\": \"08:19:59\",\n          \"scheduled_departure_time\": \"08:20:02\"\n        }\n      ],\n      \"route_path\": [\n        \"PAT_PF4\",\n        \"TT4\",\n        \"TT9\",\n        \"TT8\",\n        \"BGP_PF3\",\n        \"TT13\",\n        \"TT15\",\n        \"TT14\",\n        \"TT17\",\n        \"RNJ_PF4\",\n        \"TT20\",\n        \"TT21\",\n        \"DRG_PF2\",\n        \"TT23\",\n        \"TT25\",\n        \"HWH_PF5\"\n      ]\n    },\n    {\n      \"train_no\": \"13009\",\n      \"name\": \"Bhagalpur Intercity\",\n      \"priority\": 6,\n      \"max_speed_kph\": 110,\n      \"color\": \"#8e44ad\",\n      \"mission_plan\": [\n        {\n          \"node_id\": \"PAT_PF3\",\n          \"scheduled_arrival_time\": \"08:10\",\n          \"scheduled_departure_time\": \"08:10\"\n        },\n        {\n          \"node_id\": \"TT3\",\n          \"scheduled_arrival_time\": \"08:13:11\",\n          \"scheduled_departure_time\": \"08:13:11\"\n        },\n        {\n          \"node_id\": \"TT5\",\n          \"scheduled_arrival_time\": \"08:13:14\",\n          \"scheduled_departure_time\": \"08:13:14\"\n        },\n        {\n          \"node_id\": \"TT6\",\n          \"scheduled_arrival_time\": \"08:16:00\",\n          \"scheduled_departure_time\": \"08:16:00\"\n        },\n        {\n          \"node_id\": \"TT9\",\n          \"scheduled_arrival_time\": \"08:19:18\",\n          \"scheduled_departure_time\": \"08:19:18\"\n        },\n        {\n          \"node_id\": \"TT8\",\n          \"scheduled_arrival_time\": \"08:26:22\",\n          \"scheduled_departure_time\": \"08:26:22\"\n        },\n        {\n          \"node_id\": \"TT7\",\n          \"scheduled_arrival_time\": \"08:26:26\",\n          \"scheduled_departure_time\": \"08:26:26\"\n        },\n        {\n          \"node_id\": \"TT10\",\n          \"scheduled_arrival_time\": \"08:26:29\",\n          \"scheduled_departure_time\": \"08:26:29\"\n        },\n        {\n          \"node_id\": \"TT11\",\n          \"scheduled_arrival_time\": \"08:26:32\",\n          \"scheduled_departure_time\": \"08:26:32\"\n        },\n        {\n          \"node_id\": \"BGP_PF1\",\n          \"scheduled_arrival_time\": \"08:26:33\",\n          \"scheduled_departure_time\": \"08:26:37\"\n        },\n        {\n          \"node_id\": \"TT12\",\n          \"scheduled_arrival_time\": \"08:26:41\",\n          \"scheduled_departure_time\": \"08:26:41\"\n        },\n        {\n          \"node_id\": \"TT14\",\n          \"scheduled_arrival_time\": \"08:26:44\",\n          \"scheduled_departure_time\": \"08:26:44\"\n        },\n        {\n          \"node_id\": \"TT17\",\n          \"scheduled_arrival_time\": \"08:26:47\",\n          \"scheduled_departure_time\": \"08:26:47\"\n        },\n        {\n          \"node_id\": \"RNJ_PF2\",\n          \"scheduled_arrival_time\": \"08:26:48\",\n          \"scheduled_departure_time\": \"08:26:52\"\n        },\n        {\n          \"node_id\": \"TT18\",\n          \"scheduled_arrival_time\": \"08:26:56\",\n          \"scheduled_departure_time\": \"08:26:56\"\n        },\n        {\n          \"node_id\": \"TT19\",\n          \"scheduled_arrival_time\": \"08:26:59\",\n          \"scheduled_departure_time\": \"08:26:59\"\n        },\n        {\n          \"node_id\": \"DRG_PF1\",\n          \"scheduled_arrival_time\": \"08:27:02\",\n          \"scheduled_departure_time\": \"08:27:03\"\n        },\n        {\n          \"node_id\": \"TT22\",\n          \"scheduled_arrival_time\": \"08:27:07\",\n          \"scheduled_departure_time\": \"08:27:07\"\n        },\n        {\n          \"node_id\": \"TT24\",\n          \"scheduled_arrival_time\": \"08:27:11\",\n          \"scheduled_departure_time\": \"08:27:11\"\n        },\n        {\n          \"node_id\": \"TT26\",\n          \"scheduled_arrival_time\": \"08:27:14\",\n          \"scheduled_departure_time\": \"08:27:14\"\n        },\n        {\n          \"node_id\": \"TT27\",\n          \"scheduled_arrival_time\": \"08:27:17\",\n          \"scheduled_departure_time\": \"08:27:17\"\n        },\n        {\n          \"node_id\": \"HWH_PF1\",\n          \"scheduled_arrival_time\": \"08:27:18\",\n          \"scheduled_departure_time\": \"08:27:22\"\n        }\n      ],\n      \"route_path\": [\n        \"PAT_PF3\",\n        \"TT3\",\n        \"TT5\",\n        \"TT6\",\n        \"TT9\",\n        \"TT8\",\n        \"TT7\",\n        \"TT10\",\n        \"TT11\",\n        \"BGP_PF1\",\n        \"TT12\",\n        \"TT14\",\n        \"TT17\",\n        \"RNJ_PF2\",\n        \"TT18\",\n        \"TT19\",\n        \"DRG_PF1\",\n        \"TT22\",\n        \"TT24\",\n        \"TT26\",\n        \"TT27\",\n        \"HWH_PF1\"\n      ]\n    },\n    {\n      \"train_no\": \"13010\",\n      \"name\": \"Durgapur Shatabdi\",\n      \"priority\": 10,\n      \"max_speed_kph\": 110,\n      \"color\": \"#c0392b\",\n      \"mission_plan\": [\n        {\n          \"node_id\": \"HWH_PF1\",\n          \"scheduled_arrival_time\": \"07:59:22\",\n          \"scheduled_departure_time\": \"07:59:25\"\n        },\n        {\n          \"node_id\": \"TT27\",\n          \"scheduled_arrival_time\": \"07:59:28\",\n          \"scheduled_departure_time\": \"07:59:28\"\n        },\n        {\n          \"node_id\": \"TT26\",\n          \"scheduled_arrival_time\": \"07:59:31\",\n          \"scheduled_departure_time\": \"07:59:31\"\n        },\n        {\n          \"node_id\": \"TT24\",\n          \"scheduled_arrival_time\": \"07:59:34\",\n          \"scheduled_departure_time\": \"07:59:34\"\n        },\n        {\n          \"node_id\": \"TT22\",\n          \"scheduled_arrival_time\": \"07:59:37\",\n          \"scheduled_departure_time\": \"07:59:37\"\n        },\n        {\n          \"node_id\": \"DRG_PF1\",\n          \"scheduled_arrival_time\": \"07:59:40\",\n          \"scheduled_departure_time\": \"07:59:43\"\n        },\n        {\n          \"node_id\": \"TT19\",\n          \"scheduled_arrival_time\": \"07:59:46\",\n          \"scheduled_departure_time\": \"07:59:46\"\n        },\n        {\n          \"node_id\": \"RNJ_PF1\",\n          \"scheduled_arrival_time\": \"07:59:49\",\n          \"scheduled_departure_time\": \"07:59:52\"\n        },\n        {\n          \"node_id\": \"TT16\",\n          \"scheduled_arrival_time\": \"07:59:55\",\n          \"scheduled_departure_time\": \"07:59:55\"\n        },\n        {\n          \"node_id\": \"TT15\",\n          \"scheduled_arrival_time\": \"07:59:58\",\n          \"scheduled_departure_time\": \"07:59:58\"\n        },\n        {\n          \"node_id\": \"TT13\",\n          \"scheduled_arrival_time\": \"08:00:01\",\n          \"scheduled_departure_time\": \"08:00:01\"\n        },\n        {\n          \"node_id\": \"BGP_PF3\",\n          \"scheduled_arrival_time\": \"08:00:04\",\n          \"scheduled_departure_time\": \"08:00:07\"\n        },\n        {\n          \"node_id\": \"TT8\",\n          \"scheduled_arrival_time\": \"08:00:10\",\n          \"scheduled_departure_time\": \"08:00:10\"\n        },\n        {\n          \"node_id\": \"TT9\",\n          \"scheduled_arrival_time\": \"08:00:13\",\n          \"scheduled_departure_time\": \"08:00:13\"\n        },\n        {\n          \"node_id\": \"TT6\",\n          \"scheduled_arrival_time\": \"08:00:16\",\n          \"scheduled_departure_time\": \"08:00:16\"\n        },\n        {\n          \"node_id\": \"TT5\",\n          \"scheduled_arrival_time\": \"08:00:19\",\n          \"scheduled_departure_time\": \"08:00:19\"\n        },\n        {\n          \"node_id\": \"TT2\",\n          \"scheduled_arrival_time\": \"08:00:22\",\n          \"scheduled_departure_time\": \"08:00:22\"\n        },\n        {\n          \"node_id\": \"TT1\",\n          \"scheduled_arrival_time\": \"08:00:25\",\n          \"scheduled_departure_time\": \"08:00:25\"\n        },\n        {\n          \"node_id\": \"PAT_PF1\",\n          \"scheduled_arrival_time\": \"08:00:28\",\n          \"scheduled_departure_time\": \"08:00:31\"\n        }\n      ],\n      \"route_path\": [\n        \"HWH_PF1\",\n        \"TT27\",\n        \"TT26\",\n        \"TT24\",\n        \"TT22\",\n        \"DRG_PF1\",\n        \"TT19\",\n        \"RNJ_PF1\",\n        \"TT16\",\n        \"TT15\",\n        \"TT13\",\n        \"BGP_PF3\",\n        \"TT8\",\n        \"TT9\",\n        \"TT6\",\n        \"TT5\",\n        \"TT2\",\n        \"TT1\",\n        \"PAT_PF1\"\n      ]\n    },\n    {\n      \"train_no\": \"13011\",\n      \"name\": \"Reverse Path Express\",\n      \"priority\": 5,\n      \"max_speed_kph\": 110,\n      \"color\": \"#f39c12\",\n      \"mission_plan\": [\n        {\n          \"node_id\": \"HWH_PF4\",\n          \"scheduled_arrival_time\": \"08:03:00\",\n          \"scheduled_departure_time\": \"08:03:03\"\n        },\n        {\n          \"node_id\": \"TT24\",\n          \"scheduled_arrival_time\": \"08:03:06\",\n          \"scheduled_departure_time\": \"08:03:06\"\n        },\n        {\n          \"node_id\": \"TT22\",\n          \"scheduled_arrival_time\": \"08:03:08\",\n          \"scheduled_departure_time\": \"08:03:08\"\n        },\n        {\n          \"node_id\": \"TT19\",\n          \"scheduled_arrival_time\": \"08:03:11\",\n          \"scheduled_departure_time\": \"08:03:11\"\n        },\n        {\n          \"node_id\": \"TT18\",\n          \"scheduled_arrival_time\": \"08:03:15\",\n          \"scheduled_departure_time\": \"08:03:15\"\n        },\n        {\n          \"node_id\": \"RNJ_PF2\",\n          \"scheduled_arrival_time\": \"08:03:18\",\n          \"scheduled_departure_time\": \"08:03:21\"\n        },\n        {\n          \"node_id\": \"TT16\",\n          \"scheduled_arrival_time\": \"08:03:23\",\n          \"scheduled_departure_time\": \"08:03:23\"\n        },\n        {\n          \"node_id\": \"TT15\",\n          \"scheduled_arrival_time\": \"08:03:26\",\n          \"scheduled_departure_time\": \"08:03:26\"\n        },\n        {\n          \"node_id\": \"TT14\",\n          \"scheduled_arrival_time\": \"08:03:30\",\n          \"scheduled_departure_time\": \"08:03:30\"\n        },\n        {\n          \"node_id\": \"TT12\",\n          \"scheduled_arrival_time\": \"08:03:33\",\n          \"scheduled_departure_time\": \"08:03:33\"\n        },\n        {\n          \"node_id\": \"BGP_PF2\",\n          \"scheduled_arrival_time\": \"08:03:36\",\n          \"scheduled_departure_time\": \"08:03:38\"\n        },\n        {\n          \"node_id\": \"TT10\",\n          \"scheduled_arrival_time\": \"08:03:41\",\n          \"scheduled_departure_time\": \"08:03:41\"\n        },\n        {\n          \"node_id\": \"TT7\",\n          \"scheduled_arrival_time\": \"08:03:45\",\n          \"scheduled_departure_time\": \"08:03:45\"\n        },\n        {\n          \"node_id\": \"TT6\",\n          \"scheduled_arrival_time\": \"08:03:48\",\n          \"scheduled_departure_time\": \"08:03:48\"\n        },\n        {\n          \"node_id\": \"TT5\",\n          \"scheduled_arrival_time\": \"08:03:51\",\n          \"scheduled_departure_time\": \"08:03:51\"\n        },\n        {\n          \"node_id\": \"TT3\",\n          \"scheduled_arrival_time\": \"08:03:53\",\n          \"scheduled_departure_time\": \"08:03:53\"\n        },\n        {\n          \"node_id\": \"PAT_PF3\",\n          \"scheduled_arrival_time\": \"08:03:56\",\n          \"scheduled_departure_time\": \"08:04:00\"\n        }\n      ],\n      \"route_path\": [\n        \"HWH_PF4\",\n        \"TT24\",\n        \"TT22\",\n        \"TT19\",\n        \"TT18\",\n        \"RNJ_PF2\",\n        \"TT16\",\n        \"TT15\",\n        \"TT14\",\n        \"TT12\",\n        \"BGP_PF2\",\n        \"TT10\",\n        \"TT7\",\n        \"TT6\",\n        \"TT5\",\n        \"TT3\",\n        \"PAT_PF3\"\n      ]\n    }\n  ]\n}\n```"
+              }
+            ],
+            "role": "model"
+          },
+          "finishReason": "STOP",
+          "index": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "operational_schedule",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Network_defiction": {
+      "main": [
+        [
+          {
+            "node": "Message a model1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "network_definition file": {
+      "main": [
+        [
+          {
+            "node": "Network_defiction",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "operational_schedule": {
+      "main": [
+        [
+          {
+            "node": "operational_schedule1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        []
+      ]
+    },
+    "operational_schedule1": {
+      "main": [
+        [
+          {
+            "node": "network_definition file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "a5152bf9-71f5-4df3-87cb-1b80cd75473d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5e50648ac0fba9af059d062397ffbaf4789609a468fb2a9caf147b6499c22daa"
+  },
+  "id": "qTdAaOlQiDTbx9tV",
+  "tags": [
+    {
+      "createdAt": "2025-09-11T21:54:11.235Z",
+      "updatedAt": "2025-09-11T21:54:11.235Z",
+      "id": "WtmqysuFkyHJYh7g",
+      "name": "SIH"
+    }
+  ]
+}

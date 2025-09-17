@@ -1,0 +1,275 @@
+{
+  "name": "Accident handeling",
+  "nodes": [
+    {
+      "parameters": {
+        "inputSource": "passthrough"
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -448,
+        -240
+      ],
+      "id": "0b9eb62c-7b06-4abd-a499-86e6cbb4844f",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "binaryPropertyName": "network_definition",
+        "destinationKey": "network_definition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        464,
+        64
+      ],
+      "id": "f9d11c85-aa45-4b1c-9b43-a82f36ac7f84",
+      "name": "Network_defiction"
+    },
+    {
+      "parameters": {
+        "fileSelector": "C:/Users/gupta/OneDrive/Desktop/New folder/SIH/network_definition.json",
+        "options": {
+          "fileName": "network_definition.json",
+          "dataPropertyName": "network_definition"
+        }
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        256,
+        -144
+      ],
+      "id": "5fc36b70-87c4-4420-ba0e-1db76630ffda",
+      "name": "network_definition file"
+    },
+    {
+      "parameters": {
+        "fileSelector": "C:/Users/gupta/OneDrive/Desktop/New folder/SIH/operational_schedule.json",
+        "options": {
+          "fileName": "operational_schedule.json",
+          "dataPropertyName": "operational_schedule"
+        }
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        -224,
+        -112
+      ],
+      "id": "da3e844e-8b0e-4cfe-b18c-84309770fdb3",
+      "name": "operational_schedule"
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "binaryPropertyName": "operational_schedule",
+        "destinationKey": "operational_schedule",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        48,
+        80
+      ],
+      "id": "8e34efea-0a0b-4827-afeb-a2f6986be1cc",
+      "name": "operational_schedule1"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-pro",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-pro"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "={{ $('When Executed by Another Workflow').item.json.query }}"
+            },
+            {
+              "content": "=You are a Train Section Controller Expert.  \nYou have deep knowledge of railway platforms, tracks, and routing of a particular section as provided in JSON base64 format.  \n\nYou will receive two input files:  \n1. operational_schedule.json → contains train schedules, arrival/departure times, mission plans, and routes.  \n   File: {{ $('operational_schedule1').item.json.operational_schedule }} \n\n2. network_definition.json → contains static track layout, nodes, platforms, and edges of the section.  \n   File: {{ $json.network_definition }}  \n\n**Task (Accident Handling):**  \n- If a query states that *an accident has occurred on a specific train*, do the following:  \n  1. Identify the **train’s current node (platform/track)** from operational_schedule.json.  \n  2. In network_definition.json, mark the **previous node** and the **next node** of that train’s route as **BLOCKED**.  \n  3. Ensure **no other trains are allowed** to enter those blocked nodes until cleared.  \n  4. Return the updated `network_definition.json` in the **same format** as received, with only the two nodes updated as blocked.  \n\n**Output Rule:**  \n- For accident queries → return **updated network_definition.json**.  \n- For normal queries → follow regular info retrieval/rescheduling rules.  \n\n",
+              "role": "model"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        672,
+        -160
+      ],
+      "id": "055e0ed1-0d9b-4793-9538-93d91de5da9c",
+      "name": "Message a model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "U5zHwhRvUHKhDCAN",
+          "name": "ayaj key"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:5000/receive",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={{ $json.content.parts[1].text.slice(8,-3) }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "updated Operational file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1024,
+        48
+      ],
+      "id": "799d1bc1-f8c4-42ee-a450-0392b068dcd1",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "content": "## Block two adjacent nodes(F , B) if train accident or bad whether or distruption",
+        "height": 336,
+        "width": 368,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1488,
+        -368
+      ],
+      "typeVersion": 1,
+      "id": "df28cbb0-d5ea-4eae-ba8d-4431859daf75",
+      "name": "Sticky Note1"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "query": "There has been an accident near node TT9 on the Amritsar Mail (13006)."
+        }
+      }
+    ],
+    "Message a model1": [
+      {
+        "json": {
+          "content": {
+            "parts": [
+              {
+                "text": "**Important Note:** *You MUST process the input files as JSON data that are Base64 encoded*. Decode them, perform your task, and then provide the output as a JSON string."
+              },
+              {
+                "text": "```json\n{\n  \"section_details\": {\n    \"name\": \"Patna - Howrah Demo Section\",\n    \"grid_dimensions\": {\n      \"width\": 1200,\n      \"height\": 1000\n    }\n  },\n  \"nodes\": [\n    {\n      \"id\": \"TT1\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"Patna turn 1\",\n      \"position\": {\n        \"x\": 200,\n        \"y\": 100\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\"\n    },\n    {\n      \"id\": \"TT2\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"turn 2\",\n      \"position\": {\n        \"x\": 230,\n        \"y\": 150\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\"\n    },\n    {\n      \"id\": \"TT3\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"turn 3\",\n      \"position\": {\n        \"x\": 280,\n        \"y\": 200\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\"\n    },\n    {\n      \"id\": \"TT4\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"turn 4\",\n      \"position\": {\n        \"x\": 300,\n        \"y\": 250\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\"\n    },\n    {\n      \"id\": \"TT5\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"turn 5\",\n      \"position\": {\n        \"x\": 350,\n        \"y\": 150\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\"\n    },\n    {\n      \"id\": \"TT6\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"turn 6\",\n      \"position\": {\n        \"x\": 400,\n        \"y\": 150\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\",\n      \"status\": \"BLOCKED\"\n    },\n    {\n      \"id\": \"TT7\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"turn 7\",\n      \"position\": {\n        \"x\": 450,\n        \"y\": 150\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\"\n    },\n    {\n      \"id\": \"TT8\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"turn 8\",\n      \"position\": {\n        \"x\": 420,\n        \"y\": 200\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\",\n      \"status\": \"BLOCKED\"\n    },\n    {\n      \"id\": \"TT9\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"turn 9\",\n      \"position\": {\n        \"x\": 370,\n        \"y\": 200\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\"\n    },\n    {\n      \"id\": \"TT10\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"turn 10\",\n      \"position\": {\n        \"x\": 500,\n        \"y\": 150\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\"\n    },\n    {\n      \"id\": \"TT11\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"turn 11\",\n      \"position\": {\n        \"x\": 550,\n        \"y\": 100\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\"\n    },\n    {\n      \"id\": \"TT12\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"turn 12\",\n      \"position\": {\n        \"x\": 900,\n        \"y\": 100\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\"\n    },\n    {\n      \"id\": \"TT13\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"turn 13\",\n      \"position\": {\n        \"x\": 900,\n        \"y\": 150\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\"\n    },\n    {\n      \"id\": \"TT14\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"turn 14\",\n      \"position\": {\n        \"x\": 1100,\n        \"y\": 100\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\"\n    },\n    {\n      \"id\": \"TT15\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"turn 15\",\n      \"position\": {\n        \"x\": 1000,\n        \"y\": 200\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\"\n    },\n    {\n      \"id\": \"TT16\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"turn 16\",\n      \"position\": {\n        \"x\": 950,\n        \"y\": 300\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\"\n    },\n    {\n      \"id\": \"TT17\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"turn 17\",\n      \"position\": {\n        \"x\": 1150,\n        \"y\": 300\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\"\n    },\n    {\n      \"id\": \"TT18\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"turn 18\",\n      \"position\": {\n        \"x\": 900,\n        \"y\": 600\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\"\n    },\n    {\n      \"id\": \"TT19\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"turn 19\",\n      \"position\": {\n        \"x\": 850,\n        \"y\": 650\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\"\n    },\n    {\n      \"id\": \"TT20\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"turn 20\",\n      \"position\": {\n        \"x\": 950,\n        \"y\": 650\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\"\n    },\n    {\n      \"id\": \"TT21\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"turn 21\",\n      \"position\": {\n        \"x\": 950,\n        \"y\": 700\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\"\n    },\n    {\n      \"id\": \"TT22\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"turn 22\",\n      \"position\": {\n        \"x\": 850,\n        \"y\": 900\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\"\n    },\n    {\n      \"id\": \"TT23\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"turn 23\",\n      \"position\": {\n        \"x\": 900,\n        \"y\": 950\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\"\n    },\n    {\n      \"id\": \"TT24\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"turn 24\",\n      \"position\": {\n        \"x\": 500,\n        \"y\": 750\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\"\n    },\n    {\n      \"id\": \"TT25\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"turn 25\",\n      \"position\": {\n        \"x\": 500,\n        \"y\": 900\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\"\n    },\n    {\n      \"id\": \"TT26\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"turn 26\",\n      \"position\": {\n        \"x\": 400,\n        \"y\": 700\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\"\n    },\n    {\n      \"id\": \"TT27\",\n      \"type\": \"TRACK_TURN\",\n      \"name\": \"turn 27\",\n      \"position\": {\n        \"x\": 300,\n        \"y\": 600\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"turn\"\n    },\n    {\n      \"id\": \"PAT_PF1\",\n      \"type\": \"STATION_PLATFORM\",\n      \"name\": \"Patna Junction PF 1\",\n      \"position\": {\n        \"x\": 100,\n        \"y\": 100\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"Patna Junction\"\n    },\n    {\n      \"id\": \"PAT_PF2\",\n      \"type\": \"STATION_PLATFORM\",\n      \"name\": \"Patna Junction PF 2\",\n      \"position\": {\n        \"x\": 100,\n        \"y\": 150\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"Patna Junction\"\n    },\n    {\n      \"id\": \"PAT_PF3\",\n      \"type\": \"STATION_PLATFORM\",\n      \"name\": \"Patna Junction PF 3\",\n      \"position\": {\n        \"x\": 100,\n        \"y\": 200\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"Patna Junction\"\n    },\n    {\n      \"id\": \"PAT_PF4\",\n      \"type\": \"STATION_PLATFORM\",\n      \"name\": \"Patna Junction PF 4\",\n      \"position\": {\n        \"x\": 100,\n        \"y\": 250\n      },\n      \"station_id\": \"PAT\",\n      \"station_name\": \"Patna Junction\"\n    },\n    {\n      \"id\": \"BGP_PF1\",\n      \"type\": \"STATION_PLATFORM\",\n      \"name\": \"Bhagalpur Junction PF 1\",\n      \"position\": {\n        \"x\": 750,\n        \"y\": 100\n      },\n      \"station_id\": \"BGP\",\n      \"station_name\": \"Bhagalpur Junction\"\n    },\n    {\n      \"id\": \"BGP_PF2\",\n      \"type\": \"STATION_PLATFORM\",\n      \"name\": \"Bhagalpur Junction PF 2\",\n      \"position\": {\n        \"x\": 750,\n        \"y\": 150\n      },\n      \"station_id\": \"BGP\",\n      \"station_name\": \"Bhagalpur Junction\"\n    },\n    {\n      \"id\": \"BGP_PF3\",\n      \"type\": \"STATION_PLATFORM\",\n      \"name\": \"Bhagalpur Junction PF 3\",\n      \"position\": {\n        \"x\": 750,\n        \"y\": 200\n      },\n      \"station_id\": \"BGP\",\n      \"station_name\": \"Bhagalpur Junction\"\n    },\n    {\n      \"id\": \"RNJ_PF1\",\n      \"type\": \"STATION_PLATFORM\",\n      \"name\": \"Raniganj Junction PF 1\",\n      \"position\": {\n        \"x\": 850,\n        \"y\": 450\n      },\n      \"station_id\": \"RNJ\",\n      \"station_name\": \"Raniganj Junction\"\n    },\n    {\n      \"id\": \"RNJ_PF2\",\n      \"type\": \"STATION_PLATFORM\",\n      \"name\": \"Raniganj Junction PF 2\",\n      \"position\": {\n        \"x\": 900,\n        \"y\": 450\n      },\n      \"station_id\": \"RNJ\",\n      \"station_name\": \"Raniganj Junction\"\n    },\n    {\n      \"id\": \"RNJ_PF3\",\n      \"type\": \"STATION_PLATFORM\",\n      \"name\": \"Raniganj Junction PF 3\",\n      \"position\": {\n        \"x\": 950,\n        \"y\": 450\n      },\n      \"station_id\": \"RNJ\",\n      \"station_name\": \"Raniganj Junction\"\n    },\n    {\n      \"id\": \"RNJ_PF4\",\n      \"type\": \"STATION_PLATFORM\",\n      \"name\": \"Raniganj Junction PF 4\",\n      \"position\": {\n        \"x\": 1000,\n        \"y\": 450\n      },\n      \"station_id\": \"RNJ\",\n      \"station_name\": \"Raniganj Junction\"\n    },\n    {\n      \"id\": \"DRG_PF1\",\n      \"type\": \"STATION_PLATFORM\",\n      \"name\": \"Durgapur Junction PF 1\",\n      \"position\": {\n        \"x\": 850,\n        \"y\": 800\n      },\n      \"station_id\": \"DRG\",\n      \"station_name\": \"Durgapur Junction\"\n    },\n    {\n      \"id\": \"DRG_PF2\",\n      \"type\": \"STATION_PLATFORM\",\n      \"name\": \"Durgapur Junction PF 2\",\n      \"position\": {\n        \"x\": 900,\n        \"y\": 800\n      },\n      \"station_id\": \"DRG\",\n      \"station_name\": \"Durgapur Junction\"\n    },\n    {\n      \"id\": \"HWH_PF1\",\n      \"type\": \"STATION_PLATFORM\",\n      \"name\": \"Howrah Junction PF 1\",\n      \"position\": {\n        \"x\": 100,\n        \"y\": 600\n      },\n      \"station_id\": \"HWH\",\n      \"station_name\": \"Howrah Junction\"\n    },\n    {\n      \"id\": \"HWH_PF2\",\n      \"type\": \"STATION_PLATFORM\",\n      \"name\": \"Howrah Junction PF 2\",\n      \"position\": {\n        \"x\": 100,\n        \"y\": 650\n      },\n      \"station_id\": \"HWH\",\n      \"station_name\": \"Howrah Junction\"\n    },\n    {\n      \"id\": \"HWH_PF3\",\n      \"type\": \"STATION_PLATFORM\",\n      \"name\": \"Howrah Junction PF 3\",\n      \"position\": {\n        \"x\": 100,\n        \"y\": 700\n      },\n      \"station_id\": \"HWH\",\n      \"station_name\": \"Howrah Junction\"\n    },\n    {\n      \"id\": \"HWH_PF4\",\n      \"type\": \"STATION_PLATFORM\",\n      \"name\": \"Howrah Junction PF 4\",\n      \"position\": {\n        \"x\": 100,\n        \"y\": 750\n      },\n      \"station_id\": \"HWH\",\n      \"station_name\": \"Howrah Junction\"\n    },\n    {\n      \"id\": \"HWH_PF5\",\n      \"type\": \"STATION_PLATFORM\",\n      \"name\": \"Howrah Junction PF 5\",\n      \"position\": {\n        \"x\": 100,\n        \"y\": 800\n      },\n      \"station_id\": \"HWH\",\n      \"station_name\": \"Howrah Junction\"\n    }\n  ],\n  \"edges\": [\n    {\n      \"id\": \"E1\",\n      \"name\": \"track\",\n      \"start_node_id\": \"PAT_PF1\",\n      \"end_node_id\": \"TT1\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E2\",\n      \"name\": \"track\",\n      \"start_node_id\": \"PAT_PF2\",\n      \"end_node_id\": \"TT2\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E3\",\n      \"name\": \"track\",\n      \"start_node_id\": \"PAT_PF3\",\n      \"end_node_id\": \"TT3\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E4\",\n      \"name\": \"track\",\n      \"start_node_id\": \"PAT_PF4\",\n      \"end_node_id\": \"TT4\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E5\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT1\",\n      \"end_node_id\": \"TT2\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E6\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT2\",\n      \"end_node_id\": \"TT5\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E7\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT5\",\n      \"end_node_id\": \"TT6\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E8\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT6\",\n      \"end_node_id\": \"TT7\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E9\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT7\",\n      \"end_node_id\": \"TT10\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E10\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT10\",\n      \"end_node_id\": \"TT11\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E11\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT3\",\n      \"end_node_id\": \"TT5\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E12\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT4\",\n      \"end_node_id\": \"TT9\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E13\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT9\",\n      \"end_node_id\": \"TT6\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E14\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT9\",\n      \"end_node_id\": \"TT8\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E15\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT8\",\n      \"end_node_id\": \"TT7\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E16\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT11\",\n      \"end_node_id\": \"BGP_PF1\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E17\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT10\",\n      \"end_node_id\": \"BGP_PF2\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E18\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT8\",\n      \"end_node_id\": \"BGP_PF3\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E19\",\n      \"name\": \"track\",\n      \"start_node_id\": \"BGP_PF1\",\n      \"end_node_id\": \"TT12\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E20\",\n      \"name\": \"track\",\n      \"start_node_id\": \"BGP_PF2\",\n      \"end_node_id\": \"TT12\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E21\",\n      \"name\": \"track\",\n      \"start_node_id\": \"BGP_PF3\",\n      \"end_node_id\": \"TT13\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E22\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT12\",\n      \"end_node_id\": \"TT14\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E23\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT13\",\n      \"end_node_id\": \"TT15\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E24\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT15\",\n      \"end_node_id\": \"TT14\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E25\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT14\",\n      \"end_node_id\": \"TT17\",\n      \"length_km\": 1.5\n    },\n    {\n      \"id\": \"E26\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT15\",\n      \"end_node_id\": \"TT16\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E27\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT16\",\n      \"end_node_id\": \"RNJ_PF1\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E28\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT16\",\n      \"end_node_id\": \"RNJ_PF2\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E29\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT17\",\n      \"end_node_id\": \"RNJ_PF2\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E30\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT17\",\n      \"end_node_id\": \"RNJ_PF3\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E31\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT17\",\n      \"end_node_id\": \"RNJ_PF4\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E32\",\n      \"name\": \"track\",\n      \"start_node_id\": \"RNJ_PF1\",\n      \"end_node_id\": \"TT19\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E33\",\n      \"name\": \"track\",\n      \"start_node_id\": \"RNJ_PF2\",\n      \"end_node_id\": \"TT18\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E34\",\n      \"name\": \"track\",\n      \"start_node_id\": \"RNJ_PF3\",\n      \"end_node_id\": \"TT18\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E35\",\n      \"name\": \"track\",\n      \"start_node_id\": \"RNJ_PF3\",\n      \"end_node_id\": \"TT20\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E36\",\n      \"name\": \"track\",\n      \"start_node_id\": \"RNJ_PF4\",\n      \"end_node_id\": \"TT20\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E37\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT20\",\n      \"end_node_id\": \"TT21\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E38\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT18\",\n      \"end_node_id\": \"TT19\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E39\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT19\",\n      \"end_node_id\": \"TT21\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E40\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT19\",\n      \"end_node_id\": \"DRG_PF1\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E41\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT21\",\n      \"end_node_id\": \"DRG_PF2\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E42\",\n      \"name\": \"track\",\n      \"start_node_id\": \"DRG_PF1\",\n      \"end_node_id\": \"TT22\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E43\",\n      \"name\": \"track\",\n      \"start_node_id\": \"DRG_PF2\",\n      \"end_node_id\": \"TT23\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E44\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT22\",\n      \"end_node_id\": \"TT24\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E45\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT23\",\n      \"end_node_id\": \"TT25\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E46\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT25\",\n      \"end_node_id\": \"HWH_PF4\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E47\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT25\",\n      \"end_node_id\": \"HWH_PF5\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E48\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT24\",\n      \"end_node_id\": \"TT26\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E49\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT26\",\n      \"end_node_id\": \"TT27\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E50\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT27\",\n      \"end_node_id\": \"HWH_PF1\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E51\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT27\",\n      \"end_node_id\": \"HWH_PF2\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E52\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT26\",\n      \"end_node_id\": \"HWH_PF3\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E53\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT24\",\n      \"end_node_id\": \"HWH_PF4\",\n      \"length_km\": 0.5\n    },\n    {\n      \"id\": \"E54\",\n      \"name\": \"track\",\n      \"start_node_id\": \"TT6\",\n      \"end_node_id\": \"TT9\",\n      \"length_km\": 0.5\n    }\n  ]\n}\n```"
+              }
+            ],
+            "role": "model"
+          },
+          "finishReason": "STOP",
+          "index": 0
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "operational_schedule",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "network_definition file": {
+      "main": [
+        [
+          {
+            "node": "Network_defiction",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "operational_schedule": {
+      "main": [
+        [
+          {
+            "node": "operational_schedule1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "operational_schedule1": {
+      "main": [
+        [
+          {
+            "node": "network_definition file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Network_defiction": {
+      "main": [
+        [
+          {
+            "node": "Message a model1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Message a model1": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1adf5d2a-a421-4d32-a175-ecfa249fbf9e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5e50648ac0fba9af059d062397ffbaf4789609a468fb2a9caf147b6499c22daa"
+  },
+  "id": "6FT0YYgpLbDwKpYA",
+  "tags": [
+    {
+      "createdAt": "2025-09-11T21:54:11.235Z",
+      "updatedAt": "2025-09-11T21:54:11.235Z",
+      "id": "WtmqysuFkyHJYh7g",
+      "name": "SIH"
+    }
+  ]
+}

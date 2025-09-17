@@ -1,0 +1,401 @@
+{
+  "name": "SIH",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "c2a88b48-f03e-4f2e-8118-b46e2b3abdc6",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -896,
+        -16
+      ],
+      "id": "b70552ef-829d-4e4c-8278-882b5e768a02",
+      "name": "Webhook",
+      "webhookId": "c2a88b48-f03e-4f2e-8118-b46e2b3abdc6",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.name }}",
+        "options": {
+          "systemMessage": "You are the Central AI Orchestrator for an AI-powered Train Traffic Control System. \nYour role is to act as the intelligent coordinator between human controllers, \nsub-agents, and railway systems. You do NOT directly solve every task yourself; \ninstead, you analyze the request, break it down, and assign it to the correct \nsub-agent. You ensure there is no overlap or confusion between sub-agents.\n\n## Core Objective\nOptimize train operations within a railway section by dynamically coordinating \nsub-agents, ensuring safety, punctuality, and maximum throughput.\n\n## Sub-Agent Directory\nEach sub-agent has a specific role. Always route the task to the most relevant \nsub-agent without mixing responsibilities.\n\n1. **Real-Time Search Agent**  \n   - Us this tool to Fetches live train data like (train delays , train info ,signalling status). \n   - Used for dynamic, time-sensitive queries.  \n\n2. **Static Data Updation Agent**  \n   - Manages static or semi-static datasets (timetables, station info, platform capacity, track layout).\n   - Updates and retrieves persistent data.\n\n3. **Incoming Request Manager Agent**  \n   - Handles incoming train entries into the section.\n   - Assigns priorities, checks feasibility against schedule and infrastructure.\n\n4. **Outgoing Train Manager Agent**  \n   - Handles departures and exits from the section.\n   - Coordinates with platform release, route clearance, and signalling.\n\n5. **Train Data Manager Agent**  \n   - Maintains train-specific metadata (priority class, speed, composition, loco type, load).\n   - Answers all train profile-related queries.\n\n6. **Disruption & Incident Manager Agent**  \n   - Detects and manages unexpected disruptions (failures, breakdowns, weather).\n   - Initiates re-optimization and informs controllers.\n\n7. **Conflict Resolution Agent**  \n   - Detects conflicts (two or more trains competing for same resource).\n   - Resolves them using precedence rules and alternate strategies.\n\n8. **Safety & Compliance Agent**  \n   - Ensures decisions comply with operational safety rules.\n   - Validates all routes, signals, and block permissions.\n\n9. **Simulation & Scenario Agent**  \n   - Runs what-if analyses for alternate plans.\n   - Provides scenario-based predictions for rerouting or delays.\n\n10. **Performance & KPI Agent**  \n   - Tracks system performance, punctuality, throughput, and delays.\n   - Generates dashboards and audit trails.\n\n11. **Integration & API Agent**  \n   - Interfaces with external railway systems (signalling, TMS, weather, rolling stock).\n   - Normalizes incoming data for other agents.\n\n12. **Learning & Adaptation Agent**  \n   - Learns from historical outcomes and controller feedback.\n   - Suggests optimizations and long-term improvements.\n\n## Rules of Operation\n- **Never mix sub-agent roles.** If a task belongs to multiple domains, \n  break it into parts and assign separately.\n- **Always explain your reasoning** before routing: clarify which agent is \n  responsible and why.\n- **Handle conflicts by prioritization**: \n  Passenger Express > Mail/Local Passenger > Freight > Maintenance > Specials.\n- **Maintain safety constraints** at all times (signalling, blocks, track availability).\n- **Re-optimize dynamically** when disruptions occur (delays, failures, weather).\n- **Always return structured responses** in the format below.\n\n## Response Format\nWhen handling a user/system request, respond in JSON with:\n{\n  \"task_received\": \"<short description of request>\",\n  \"assigned_to\": \"<sub-agent name>\",\n  \"reasoning\": \"<why this agent is best suited>\",\n  \"action\": \"<instruction to sub-agent>\"\n}\n\nIf multiple agents are needed, return an array of tasks.\n\n## Example 1: Train Delay Status\nInput: \"What is the status of Train 123?\"\nOutput:\n{\n  \"task_received\": \"Status request for Train 123\",\n  \"assigned_to\": \"Real-Time Search Agent\",\n  \"reasoning\": \"This requires live operational data\",\n  \"action\": \"Fetch live status of Train 123\"\n}\n\n## Example 2: New Train Entering\nInput: \"Train 789 is entering from Patna, schedule it\"\nOutput:\n{\n  \"task_received\": \"Incoming train scheduling for Train 789\",\n  \"assigned_to\": \"Incoming Request Manager Agent\",\n  \"reasoning\": \"This involves assigning route and priority for a new incoming train\",\n  \"action\": \"Assign priority and feasible path for Train 789\"\n}\n\n---\nRemember: You are the **central decision-making brain**. \nYou never confuse sub-agent responsibilities. You only orchestrate.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        -592,
+        -128
+      ],
+      "id": "2db8961b-a020-42a3-a8b4-980234595996",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -784,
+        272
+      ],
+      "id": "4ec39939-a16a-4886-bf37-d54fd2de75e2",
+      "name": "Simple Memory",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {
+          "gl": "IN",
+          "google_domain": "google.com",
+          "hl": "en"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolSerpApi",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        256
+      ],
+      "id": "15b9920f-513e-467f-8f7a-4c4f10e514b6",
+      "name": "Real-Time Search Agent",
+      "credentials": {
+        "serpApi": {
+          "id": "8PR1BMM1GZl3v7Mk",
+          "name": "SerpAPI account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "6FT0YYgpLbDwKpYA",
+          "mode": "list",
+          "cachedResultName": "x"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -224,
+        256
+      ],
+      "id": "1716f74c-5356-489d-8e44-3dbb3b6ce9d4",
+      "name": "Accident Handling agent"
+    },
+    {
+      "parameters": {
+        "respondWith": "allIncomingItems",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -192,
+        -128
+      ],
+      "id": "2ced38a1-325a-481e-b546-b159710d171a",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "workflowId": {
+          "__rl": true,
+          "value": "6FT0YYgpLbDwKpYA",
+          "mode": "list",
+          "cachedResultName": "x"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -48,
+        256
+      ],
+      "id": "9fbb46b8-5498-44e8-970a-b4c44e45afe9",
+      "name": "Regular train flow agent"
+    },
+    {
+      "parameters": {
+        "content": "**Train rerouting on the behalf of priority , current track , platform traffic of the train ,  it will minimise train delay increase throughput, track damage, blocked track**  ",
+        "height": 192,
+        "width": 176
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -464,
+        400
+      ],
+      "typeVersion": 1,
+      "id": "4637c413-8fe2-43fd-ad58-1313ecccad7e",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "**Block two adjacent station track(F , B) if train accident or bad whether or distruption**",
+        "height": 192,
+        "width": 176,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -256,
+        400
+      ],
+      "typeVersion": 1,
+      "id": "4e45e946-9f15-41af-bb80-1480f5129afd",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "**Train signal for departure , arriving no predefined track , stop at outer,  if not delay**",
+        "height": 192,
+        "width": 176,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -64,
+        400
+      ],
+      "typeVersion": 1,
+      "id": "e9d81641-8131-4301-be80-7c813ca7b70b",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "**Take real time train status like location , delay , platform arrival and all through railway apis**",
+        "height": 192,
+        "width": 150,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -640,
+        400
+      ],
+      "typeVersion": 1,
+      "id": "1f1d19b8-1281-499c-afde-61348ec15141",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "description": "Use this tool to get the info about the station track data , train running data",
+        "workflowId": {
+          "__rl": true,
+          "value": "qTdAaOlQiDTbx9tV",
+          "mode": "list",
+          "cachedResultName": "Train rerouting"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        -432,
+        256
+      ],
+      "id": "69564f7d-ee0b-4561-8302-618b5cbd7959",
+      "name": "Train Rerouting agent"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -976,
+        272
+      ],
+      "id": "48cf7e91-4f19-40bf-8f70-0c5a5874d3b2",
+      "name": "LLM Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "tm03U3J4nhacDWFV",
+          "name": "githhub mani"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.3,
+      "position": [
+        -896,
+        -224
+      ],
+      "id": "74fdc3ba-531d-4d9d-89f4-0276f8e3f231",
+      "name": "When chat message received",
+      "webhookId": "8b5c68ac-9285-4cbf-9372-bcc658c92b00"
+    }
+  ],
+  "pinData": {
+    "When chat message received": [
+      {
+        "json": {
+          "name": "Give me live train status of Farakka express"
+        }
+      }
+    ],
+    "Respond to Webhook": [
+      {
+        "json": {
+          "Delay": "12 minutes overall",
+          "Last crossed station": "Samar Gopalpur (SMF) at about 19:16",
+          "Next station": "Gangarampur",
+          "Platform number at next station": "Platform 1"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Real-Time Search Agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Accident Handling agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Regular train flow agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Train Rerouting agent": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "LLM Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1eaff071-d831-424c-bdab-2c152ab5db5b",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5e50648ac0fba9af059d062397ffbaf4789609a468fb2a9caf147b6499c22daa"
+  },
+  "id": "ky4o9PkN24izIYFE",
+  "tags": []
+}
