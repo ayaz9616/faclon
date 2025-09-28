@@ -56,39 +56,6 @@ Unlike typical ML or RL models, our system is:
 
 ## 🏗️ System Architecture
 
-- Part 1:
-```mermaid
-flowchart TD
-    subgraph DataLayer[Data Layer]
-        Sensors[Train Sensors & Track Signals]
-        API[Indian Railways APIs]
-    end
-
-    subgraph Backend[Backend - AI System]
-        MainAgent[Main AI Agent (Chief Controller)]
-        FlowAgent[Regular Flow Agent]
-        RerouteAgent[Train Rerouting Agent]
-        AccidentAgent[Accident Handling Agent]
-        DB[(PostgreSQL Database)]
-    end
-
-    subgraph Frontend[Frontend - Controller Dashboard]
-        Dashboard[Next.js Live Dashboard]
-        Simulation[Real-time Train Simulation]
-    end
-
-    Sensors -->|Live Data| API --> MainAgent
-    MainAgent --> FlowAgent
-    MainAgent --> RerouteAgent
-    MainAgent --> AccidentAgent
-    FlowAgent --> DB
-    RerouteAgent --> DB
-    AccidentAgent --> DB
-    MainAgent --> Dashboard
-    Dashboard --> Simulation
-    Dashboard -->|Manual Override| MainAgent
-```
--Part 2:
 ```mermaid
 sequenceDiagram
     participant Data as Live Data Input
