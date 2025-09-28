@@ -56,6 +56,7 @@ Unlike typical ML or RL models, our system is:
 
 ## 🏗️ System Architecture
 
+- Part 1:
 ```mermaid
 flowchart TD
     subgraph DataLayer[Data Layer]
@@ -87,7 +88,7 @@ flowchart TD
     Dashboard --> Simulation
     Dashboard -->|Manual Override| MainAgent
 ```
-
+-Part 2:
 ```mermaid
 sequenceDiagram
     participant Data as Live Data Input
