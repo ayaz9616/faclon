@@ -20,37 +20,59 @@ It acts as an **intelligent co-pilot for traffic controllers**, upgrading the ma
 
 ---
 
+## 🎥 Project Demonstration
+
+[![Video Demo](https://img.icons8.com/color/64/000000/youtube-play.png)](https://www.youtube.com/watch?v=2RoSyJ2p6LA)  
+[![Watch Demo](https://drive.google.com/uc?id=10Lm4MmG67Kk07yGbgYwle0kT8qNI6pKm)](https://www.youtube.com/watch?v=2RoSyJ2p6LA)
+
+---
+
 ## 🤖 Our Solution: A Practical, Agent-Based AI
 
 Unlike typical ML or RL models, our system is:
 
-- ✅ **No Training, No Guesswork** → Works from day one.  
-- ⚡ **Ultra-Low Latency** → Real-time decision making.  
+- ✅ **No Training, No Guesswork** → Works from day one.
+- ⚡ **Ultra-Low Latency** → Real-time decision making.
 - 🧠 **Rules + Logic Driven** → Built on Indian Railways regulations.
 
 ### 👥 AI Agents
 
-- **Main AI Agent (Chief Controller)** → Delegates and supervises.  
-- **Regular Flow Agent** → Manages day-to-day operations.  
-- **Train Rerouting Agent** → Strategically reroutes trains to minimize delays.  
-- **Accident Handling Agent** → First responder in emergencies.  
+- **Main AI Agent (Chief Controller)** → Delegates and supervises.
+- **Regular Flow Agent** → Manages day-to-day operations.
+- **Train Rerouting Agent** → Strategically reroutes trains to minimize delays.
+- **Accident Handling Agent** → First responder in emergencies.
 - **Priority Management System** → Weighted delays (e.g., *1 hr Rajdhani delay = 5 hr effective delay*).
 
 ---
 
 ## ⚡ Handling Railway Complexity
 
-- 🚨 **Accidents & Emergencies** → Instantly blocks affected tracks & reroutes trains.  
-- 🔀 **Intelligent Rerouting** → Maximizes available track usage while minimizing delays.  
+- 🚨 **Accidents & Emergencies** → Instantly blocks affected tracks & reroutes trains.
+- 🔀 **Intelligent Rerouting** → Maximizes available track usage while minimizing delays.
 - 🎯 **Priority Management** → Ensures high-priority trains always get preference.
 
 ---
 
 ## 📊 Controller Dashboard
 
-- 🗺️ **Live Simulation** of train movements.  
-- 🚦 **Emergency Highlighting** → Blocked tracks in red.  
+- 🗺️ **Live Simulation** of train movements.
+- 🚦 **Emergency Highlighting** → Blocked tracks in red.
 - 🎛️ **Manual Handover** → Controller always retains full command.
+
+🎬 The dashboard demonstration in the video showcases:
+- Real-time movement of trains with color-coded routes.
+- Interactive delay injection and agent response.
+- Multi-agent workflow (Main, Flow, Rerouting, Accident Handling).
+- Performance KPIs and efficiency metrics.
+
+---
+
+## 📷 Screenshots
+
+![Dashboard](https://drive.google.com/uc?id=1qMxta-Ol4zkBhfoYykRmBwakMZPrEdMc)
+![Simulation](https://drive.google.com/uc?id=1csnTtI-t8AEd81IXnHeyTcWwgRPV4ssb)
+![Live Metrics](https://drive.google.com/uc?id=1eOsnFb7YrzsfvGtPIRm6abaFr_8KN10r)
+![Additional Screenshot](https://drive.google.com/uc?id=1gf8fiD_Z0MiesZEjRM1WRa5LSqG5qQgA)
 
 ---
 
@@ -73,4 +95,5 @@ sequenceDiagram
     Reroute ->> Main: Return rerouting plan
     Main ->> Controller: Display AI suggestions on dashboard
     Controller -->> Main: Approve / Override decision
+``` 
 ```
